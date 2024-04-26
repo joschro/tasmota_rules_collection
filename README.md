@@ -8,19 +8,19 @@ I use the Wemos Mini D1 ([micro-USB](https://www.berrybase.de/d1-mini-esp8266-en
 Timer
 =====
 To toggle a relay or light off after a specific time being switched on, use PulseTime:
-
-  PulseTime<x> 1..111ms / ((112..64900)-100)s
-
+```
+PulseTime<x> 1..111ms / ((112..64900)-100)s
+```
 If the webinterface's timers are used to toggle on, make sure to set the timezone once in the console, e.g. 
-
-  Timezone 99
-
+```
+Timezone 99
+```
 for Germany (DE).
 
 For inverted operation, i.e. switched off by any trigger and toggled on after a specific time, specify
-
-  PowerOnState 5
-
+```
+PowerOnState 5
+```
 once in the console.
 
 
