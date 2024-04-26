@@ -51,6 +51,7 @@ Activate rule with ```rule1 1``` in the console.
 
 Turn on for 2min, 30min off
 ---------------------------
+```
 rule1
   ON power1#state=1 DO
     backlog power1 %value%; ruletimer1 120
@@ -67,10 +68,27 @@ rule1
   ON system#boot DO
     power1 2
   ENDON
-rule1 1
+```
+Activate rule with ```rule1 1``` in the console.
 
-### oder ###
-
-# alle halbe Stunde schalten
-rule1 on power1#state=1 do backlog power1 %value%; ruletimer1 1800 endon on rules#timer=1 do power1 off endon on power1#state=0 do backlog power1 %value%; ruletimer2 1800 endon on rules#timer=2 do power1 on endon  ON system#boot DO power1 2 ENDON
-rule1 1
+Toggle every half hour
+----------------------
+```
+rule1
+  on power1#state=1 do
+    backlog power1 %value%; ruletimer1 1800
+  endon
+  on rules#timer=1 do
+    power1 off
+  endon
+  on power1#state=0 do
+    backlog power1 %value%; ruletimer2 1800
+  endon
+  on rules#timer=2 do
+    power1 on
+  endon
+  ON system#boot DO
+    power1 2
+  ENDON
+  ```
+Activate rule with ```rule1 1``` in the console.
