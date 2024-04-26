@@ -68,7 +68,7 @@ Adjust the speed to your preferences: ```Mem1``` is the speed with which the lig
 ```Mem3``` sets the time until the device turns itself off.
 
 (Maybe required:
-Backlog SetOption0 0; SetOption15 1; LedPower 0; SetOption31 1)
+```Backlog SetOption0 0; SetOption15 1; LedPower 0; SetOption31 1```)
 
 ```
 Mem1 4
@@ -97,3 +97,4 @@ Use ```Dimmer +```, ```Dimmer -``` with ```DimmerStep <steps>```; ```Dimmer >```
 
 Traffic light
 =============
+tbd
