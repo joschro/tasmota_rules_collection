@@ -65,11 +65,12 @@ Rule1
     Power1 2
   EndOn
 ```
-Activate rule with ```Rule1 1``` in the console.
+Activate rule with ```Rule1 1``` in the console. Using the variable of type ```Mem``` ensures they survive a reboot of the device. To change the timing, just re-enter ```Mem1 <x>``` and ```Mem2 <y>``` and restart the device.
 
 Pulsing LED light (Dodow)
 -------------------------
 When turned on, the Dodow device throws a pulsing blue LED spot to the ceiling for you to breathe with the pulsing light and fall into sleep more easily.
+
 Adjust the speed to your preferences: ```Mem1``` is the speed with which the light turns on, ```Mem2``` is the speed with which the light turns off.
 ```Mem3``` sets the time until the device turns itself off.
 
@@ -78,8 +79,14 @@ Adjust the speed to your preferences: ```Mem1``` is the speed with which the lig
 
 ```
 Mem1 4
+```
+```
 Mem2 4
+```
+```
 Mem3 480
+```
+```
 rule1
   on Rules#Timer=1 do
     backlog speed %Mem2%; dimmer 0; delay %var2%; speed %Mem1%; dimmer 100; ruletimer1 %var1%
@@ -95,6 +102,8 @@ rule2
 Activate with
 ```
 rule1 1
+```
+```
 rule2 1
 ```
 in the console.
