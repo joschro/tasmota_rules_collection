@@ -162,3 +162,28 @@ Rule1 1
 ```
 Rule2 1
 ```
+
+Pulse counter
+=============
+Example use case is an analog water counter that short cuts two wires at every 1/1000 m³ (1l).
+Counter2 is the counted amout in m³.
+```
+Rule1
+  On Counter#C1=1000 Do
+    Counter2 +1
+  EndOn
+  On Counter#C1>=1000 do
+    Counter1 0
+  EndOn
+```
+```
+rule1 1
+```
+
+Distance / water level measurement
+==================================
+See https://favoss.de/smarte-wasserstandsanzeige-bauen/
+
+Power-monitoring with Nous A1T power plug
+=========================================
+The Nous A1T comes preconfigured with Tasmota, but needs calibration; see https://tasmota.github.io/docs/Power-Monitoring-Calibration/ on how to do this.
