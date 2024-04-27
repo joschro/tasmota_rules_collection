@@ -211,3 +211,18 @@ See https://favoss.de/smarte-wasserstandsanzeige-bauen/
 Power-monitoring with Nous A1T power plug
 =========================================
 The Nous A1T comes preconfigured with Tasmota, but needs calibration; see https://tasmota.github.io/docs/Power-Monitoring-Calibration/ on how to do this.
+
+
+More Tasmota projects
+=====================
+
+Reading SmartMeters with Tasmota and Hichi smart meter
+------------------------------------------------------
+Useful links:
+* https://www.heise.de/tests/Ausprobiert-Guenstiger-IR-Lesekopf-fuer-Smart-Meter-mit-Tastmota-Firmware-7065559.html
+* https://hessburg.de/tasmota-wifi-smartmeter-konfigurieren/
+* https://docs.google.com/document/d/1olSGZcaE_vkdNXzN_p0zGee61xKCcK3HJe3Al00xj2g/edit
+* https://wiki.volkszaehler.org/hardware/channels/meters/power/edl-ehz/emh-ehz-h1#:~:text=Der%20EMH%20eHZ%2DH%20kann,die%20IR%2DSchnittstelle%20ausgelesen%20werden.
+* https://youtu.be/VuXpzKetOhc
+* https://www.smarthomejetzt.de/gaszaehler-mit-wemos-d1-mini-mit-reed-kontakt-pullup-widerstand-und-tasmota-smart-machen/
+* https://homeitems.de/gas-und-wasserzaehler-mit-tasmota-digitalisieren/
