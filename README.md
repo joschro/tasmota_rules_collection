@@ -43,7 +43,11 @@ Mem2 1800
 Copy and paste into the Tasmota console:
 ```
 Mem1 240
+```
+```
 Mem2 1200
+```
+```
 Rule1
   On power1#state=1 Do 
     Backlog Power1 %value%; RuleTimer1 %Mem1%
