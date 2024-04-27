@@ -25,7 +25,7 @@ To toggle a relay or light off after a specific time being switched on, use Puls
 ```
 PulseTime<x> 1..111ms / ((112..64900)-100)s
 ```
-in Tasmota's console in the webinterface with <x> being the number of the relay/LED connected.
+in Tasmota's console in the webinterface with \<x\> being the number of the relay/LED connected.
 
 If the webinterface's timers are used to toggle on, make sure to set the timezone once in the console, e.g. 
 ```
