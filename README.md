@@ -136,6 +136,7 @@ Example with ```A0``` configured as ```ADC Input```, ```D1/GPIO5``` configured a
 ```
 Mem1 500
 ```
+```
 Var1 ALARM_OFF
 ```
 ```
