@@ -1,7 +1,7 @@
 # tasmota_rules_collection
-Collection of useful Tasmota (firmware for ESP8266 / ESP32 devices) commands and rules. Many more can be found [here](https://tasmota.github.io/docs/Rules/#rule-cookbook).
+Collection of useful Tasmota (firmware for ESP8266 / ESP32 devices) commands and [rules](https://tasmota.github.io/docs/Rules/). Many more can be found [here](https://tasmota.github.io/docs/Rules/#rule-cookbook). More on rules can be found [here](https://www.ei-ot.de/tasmota-rules-tutorial-mit-expressions-und-if-statement/)
 
-Here are some useful commands and rules to customize [Tasmota firmware](https://tasmota.github.io/) from the [Tasmota project](https://tasmota.app/) for various use cases with ESP8266/ESP32 based devices (see [list of compatible devices](https://templates.blakadder.com/).
+This collection contains some useful commands and rules to customize [Tasmota firmware](https://tasmota.github.io/) from the [Tasmota project](https://tasmota.app/) for various use cases with ESP8266/ESP32 based devices (see [list of compatible devices](https://templates.blakadder.com/).
 
 I use the Wemos Mini D1 ([micro-USB](https://www.berrybase.de/d1-mini-esp8266-entwicklungsboard?c=306)/[USB-C](https://www.berrybase.de/d1-mini-esp8266-entwicklungsboard-usb-c?c=306)) a lot, with add-ons like the [Relais Shield](https://www.berrybase.de/relais-shield-fuer-d1-mini?c=306). For difficult Wifi environments, there's a [version with external antenna](https://www.berrybase.de/d1-mini-pro-esp8266-entwicklungsboard-mit-u.fl-anschluss-set-mit-antenne?c=306) available, too.
 
