@@ -5,6 +5,18 @@ This collection contains some useful commands and rules to customize [Tasmota fi
 
 I use the Wemos Mini D1 ([micro-USB](https://www.berrybase.de/d1-mini-esp8266-entwicklungsboard?c=306)/[USB-C](https://www.berrybase.de/d1-mini-esp8266-entwicklungsboard-usb-c?c=306)) a lot, with add-ons like the [Relais Shield](https://www.berrybase.de/relais-shield-fuer-d1-mini?c=306). For difficult Wifi environments, there's a [version with external antenna](https://www.berrybase.de/d1-mini-pro-esp8266-entwicklungsboard-mit-u.fl-anschluss-set-mit-antenne?c=306) available, too.
 
+Setup
+-----
+To configure Tasmota for the Wemos D1 Mini, you need to flash the firmware from https://ota.tasmota.com/tasmota/release/ with
+```
+esptool --port /dev/ttyUSB0 write_flash --flash_size=4MB -fm dio 0 <e.g. tasmota-DE.bin>
+```
+on a Linux system in this case. Make sure to hold the reset button pressed while plugging in the USB cable and execute the above command right after releasing the reset button. After successfully flashing the device, connect to the new "tasmota-xxxx" wifi network with your mobile and complete the wifi setup to add the Wemos D1 Mini to your home network.
+
+Now go into "Settings" in the Wemos D1 Mini webinterface and select "Device Settings"; change device type to "Generic(18)". You are now ready to start playing with your new IoT device.
+
+Additional tools
+----------------
 To handle more than one Tasmota device with one central webinterface, you may want to give [TasmoAdmin](https://github.com/TasmoAdmin/TasmoAdmin) a try.
 
 Timer
