@@ -221,6 +221,7 @@ Reading SmartMeters with Tasmota and Hichi smart meter
 Useful links:
 * https://www.heise.de/tests/Ausprobiert-Guenstiger-IR-Lesekopf-fuer-Smart-Meter-mit-Tastmota-Firmware-7065559.html
 * https://hessburg.de/tasmota-wifi-smartmeter-konfigurieren/
+* https://ottelo.jimdofree.com/stromz%C3%A4hler-auslesen-tasmota/#1
 * https://docs.google.com/document/d/1olSGZcaE_vkdNXzN_p0zGee61xKCcK3HJe3Al00xj2g/edit
 * https://wiki.volkszaehler.org/hardware/channels/meters/power/edl-ehz/emh-ehz-h1#:~:text=Der%20EMH%20eHZ%2DH%20kann,die%20IR%2DSchnittstelle%20ausgelesen%20werden.
 * https://youtu.be/VuXpzKetOhc
