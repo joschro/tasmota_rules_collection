@@ -114,7 +114,19 @@ Use ```Dimmer +```, ```Dimmer -``` with ```DimmerStep <steps>```; ```Dimmer >```
 
 Traffic light
 =============
-tbd
+\<work in progress\>
+
+draft:
+
+Red, yellow and green LED are connected to D1, D2 and D3 respectively via resistors of ~22 ohms (GPIOs of Wemos D1 Mini have 3,3V so we don't need much to protect the LEDs).
+
+Rule1 should:
+- turn on red for Mem1 seconds and trigger yellow2green
+- turn on yellow2green for Mem2 seconds and trigger green
+- turn on green for Mem3 seconds and trigger yellow2red
+- turn on yellow for Mem4 seconds and trigger red
+
+TBD...
 
 Trigger alarm when threshold is exceeded
 ========================================
