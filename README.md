@@ -126,7 +126,7 @@ Use ```Dimmer +```, ```Dimmer -``` with ```DimmerStep <steps>```; ```Dimmer >```
 
 Traffic light
 =============
-Red, yellow and green LEDs are connected to D1, D2 and D3 respectively via resistors of ~22 ohms (GPIOs of Wemos D1 Mini have 3,3V so we don't need much to protect the LEDs).
+Red, yellow and green LEDs are connected to D4, D3 and D2 respectively via resistors of ~22 ohms (GPIOs of Wemos D1 Mini have 3,3V so we don't need much to protect the LEDs).
 
 Rule1 should look like this:
 - on boot, trigger red to turn on for 10,5 seconds
@@ -136,27 +136,27 @@ Rule1 should look like this:
 - when yellow turns off _and_ the light before yellow has been green, trigger red to turn on for 10,5 seconds
 
 ```
-PulseTime1 105
+PulseTime4 105
 ```
 ```
-PulseTime2 25
+PulseTime3 25
 ```
 ```
-PulseTime3 80
+PulseTime2 80
 ```
 ```
 Rule1
-  On Power1#State=0 do
-    Backlog Var1 0; Power2 1
-  EndOn
-  On Power2#State=0 Do
-    If(%Var1%==1) Power1 1 Else Power3 1 EndIf
+  On Power4#State=0 do
+    Backlog Var1 0; Power3 1
   EndOn
   On Power3#State=0 Do
-    Backlog Var1 1; Power2 1
+    If(%Var1%==1) Power4 1 Else Power2 1 EndIf
+  EndOn
+  On Power2#State=0 Do
+    Backlog Var1 1; Power3 1
   EndOn
   On System#Boot Do
-    Power1 1
+    Power4 1
   EndOn
 ```
 
