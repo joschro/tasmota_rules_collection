@@ -126,19 +126,42 @@ Use ```Dimmer +```, ```Dimmer -``` with ```DimmerStep <steps>```; ```Dimmer >```
 
 Traffic light
 =============
-\<work in progress\>
+Red, yellow and green LEDs are connected to D1, D2 and D3 respectively via resistors of ~22 ohms (GPIOs of Wemos D1 Mini have 3,3V so we don't need much to protect the LEDs).
 
-draft:
+Rule1 should look like this:
+- on boot, trigger red to turn on for 10,5 seconds
+- when red turns off, trigger yellow to turn on for 2,5 seconds
+- when yellow turns off _and_ the light before has been red, trigger green to turn on for 8 seconds
+- when green turns off, trigger yellow to turn on for 2,5 seconds
+- when yellow turns off _and_ the light before yellow has been green, trigger red to turn on for 10,5 seconds
 
-Red, yellow and green LED are connected to D1, D2 and D3 respectively via resistors of ~22 ohms (GPIOs of Wemos D1 Mini have 3,3V so we don't need much to protect the LEDs).
+```
+PulseTime1 105
+```
+```
+PulseTime2 25
+```
+```
+PulseTime3 80
+```
+```
+Rule1
+  On Power1#State=0 do
+    Backlog Var1 0; Power2 1
+  EndOn
+  On Power2#State=0 Do
+    If(%Var1%==1) Power1 1 Else Power3 1 EndIf
+  EndOn
+  On Power3#State=0 Do
+    Backlog Var1 1; Power2 1
+  EndOn
+  On System#Boot Do
+    Power1 1
+  EndOn
+```
 
-Rule1 should:
-- turn on red for Mem1 seconds and trigger yellow2green
-- turn on yellow2green for Mem2 seconds and trigger green
-- turn on green for Mem3 seconds and trigger yellow2red
-- turn on yellow for Mem4 seconds and trigger red
+Activate rule with ```Rule1 1``` in the console and power off/on or use the Wemos D1 Mini reset button to restart the device.
 
-TBD...
 
 Trigger alarm when threshold is exceeded
 ========================================
