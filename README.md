@@ -128,6 +128,8 @@ Traffic light
 =============
 Red, yellow and green LEDs are connected to D4, D3 and D2 respectively via resistors of ~22 ohms (GPIOs of Wemos D1 Mini have 3,3V so we don't need much to protect the LEDs).
 
+In the configuration page of Tasmota, D4, D3 and D2 are set to ```Relay``` ```1```, ```Relay``` ```2``` and ```Relay``` ```3``` respectively.
+
 Rule1 should look like this:
 - on boot, trigger red to turn on for 10,5 seconds
 - when red turns off, trigger yellow to turn on for 2,5 seconds
@@ -136,27 +138,27 @@ Rule1 should look like this:
 - when yellow turns off _and_ the light before yellow has been green, trigger red to turn on for 10,5 seconds
 
 ```
-PulseTime4 105
+PulseTime1 105
 ```
 ```
-PulseTime3 25
+PulseTime2 25
 ```
 ```
-PulseTime2 80
+PulseTime3 80
 ```
 ```
 Rule1
-  On Power4#State=0 do
-    Backlog Var1 0; Power3 1
-  EndOn
-  On Power3#State=0 Do
-    If(%Var1%==1) Power4 1 Else Power2 1 EndIf
+  On Power1#State=0 do
+    Backlog Var1 0; Power2 1
   EndOn
   On Power2#State=0 Do
-    Backlog Var1 1; Power3 1
+    If(%Var1%==1) Power1 1 Else Power3 1 EndIf
+  EndOn
+  On Power3#State=0 Do
+    Backlog Var1 1; Power2 1
   EndOn
   On System#Boot Do
-    Power4 1
+    Power1 1
   EndOn
 ```
 
