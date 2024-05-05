@@ -162,6 +162,23 @@ Rule1
   EndOn
 ```
 
+A little bit more advanced version, closer to reality:
+```
+Rule1
+  On Power1#State=0 do
+    Backlog Var1 0; Power3 1
+  EndOn
+  On Power2#State=0 Do
+    If(%Var1%==1) Backlog Power1 1; Delay 80; Power2 1
+    EndIf
+  EndOn
+  On Power3#State=0 Do
+    Backlog Var1 1; Power2 1
+  EndOn
+  On System#Boot Do
+    Backlog Power1 1; Delay 10; Power2 1
+  EndOn
+```
 Activate rule with ```Rule1 1``` in the console and power off/on or use the Wemos D1 Mini reset button to restart the device.
 
 
