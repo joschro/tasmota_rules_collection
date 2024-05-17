@@ -250,9 +250,23 @@ Distance / water level measurement
 ==================================
 See https://favoss.de/smarte-wasserstandsanzeige-bauen/
 
-Power-monitoring with Nous A1T power plug
-=========================================
-The Nous A1T comes preconfigured with Tasmota, but needs calibration; see https://tasmota.github.io/docs/Power-Monitoring-Calibration/ on how to do this.
+Power-monitoring with Nous A1T and A5T power plugs
+==================================================
+The Nous A1T and A5T come preconfigured with Tasmota, but need calibration; see https://tasmota.github.io/docs/Power-Monitoring-Calibration/ on how to do this.
+
+In case A5T was reset, you may need to reconfigure the rules for the power buttons:
+
+```
+{"NAME":"NOUS A5T","GPIO":[0,3072,544,3104,0,259,0,0,225,226,224,0,35,4704],"FLAG":1,"BASE":18}
+```
+```
+Rule1 on analog#a0<100 do break ON analog#a0<300 DO Power3 2 ENDON
+Rule1 1
+Rule2 on analog#a0<350 do break ON analog#a0<600 DO Power2 2 ENDON
+Rule2 1
+Rule3 on analog#a0<600 do break ON analog#a0<990 DO Power1 2 ENDON
+Rule3 1
+```
 
 
 More Tasmota projects
