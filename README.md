@@ -246,6 +246,11 @@ Rule1
 rule1 1
 ```
 
+To make sure one short cut is ony counted once, you need to set the ```CounterDebounce``` variable to a reasonable value (in milliseconds):
+```
+CounterDebounce 500
+```
+
 Distance / water level measurement
 ==================================
 See https://favoss.de/smarte-wasserstandsanzeige-bauen/
