@@ -279,7 +279,7 @@ E.g. toggle another Tasmota's relay ever minute:
 ```
 RULE1 ON Time#Minute|1 DO
   WebQuery http://<ip>/cm?cmnd=Power%20TOGGLE
-END ON
+ENDON
 RULE1 1
 ```
 
@@ -288,7 +288,7 @@ or start charging your car every day 241 minutes after midnight (0:00), which is
 ```
 RULE1 ON Time#Minute=241 DO
   WebQuery http://<ip>/json?id=0&pvMode=1&currLim=60
-END ON
+ENDON
 ```
 Several commands can be run using ```BACKLOG```.
 
@@ -299,7 +299,8 @@ PulseTime 700
 Rule1
   on time#minute<720 do break
   on time#minute>=1080 do break
-  on time#minute|20 do power1 on endon
+  on time#minute|20 do power1 on
+endon
 
 Rule1 1
 ```
