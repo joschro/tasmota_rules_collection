@@ -278,11 +278,18 @@ Simple cronjobs doing web requests (call an URL)
 E.g. toggle another Tasmota's relay ever minute:
 ```
 RULE1 ON Time#Minute|1 DO
-  WebQuery http://192.168.178.59/cm?cmnd=Power%20TOGGLE
+  WebQuery http://<ip>/cm?cmnd=Power%20TOGGLE
 END ON
 RULE1 1
 ```
-Using ```Time#Minute=241``` runs the WebQuery command every day 241 minutes after midnight (0:00), which is 4:01am.
+
+or start charging your car every day 241 minutes after midnight (0:00), which is 4:01am, by calling the [wbec](https://github.com/steff393/wbec) (for [Heidelberg](https://www.amperfied.de/2022/11/21/wbec-fuer-heidelberg-wallbox-energy-control-blog/) chargers) API:
+
+```
+RULE1 ON Time#Minute=241 DO
+  WebQuery http://<ip>/json?id=0&pvMode=1&currLim=60
+END ON
+```
 Several commands can be run using ```BACKLOG```.
 
 More Tasmota projects
