@@ -292,6 +292,18 @@ END ON
 ```
 Several commands can be run using ```BACKLOG```.
 
+One more example to toggle a switch every 10min between 12:00 and 18:00:
+```
+PulseTime 700
+
+Rule1
+  on time#minute<720 do break
+  on time#minute>=1080 do break
+  on time#minute|20 do power1 on endon
+
+Rule1 1
+```
+
 More Tasmota projects
 =====================
 
