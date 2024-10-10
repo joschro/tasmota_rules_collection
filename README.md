@@ -273,6 +273,17 @@ Rule3 on analog#a0<600 do break ON analog#a0<990 DO Power1 2 ENDON
 Rule3 1
 ```
 
+Simple cronjobs doing web requests (call an URL)
+==================================================
+E.g. toggle another Tasmota's relay ever minute:
+```
+RULE1 ON Time#Minute|1 DO
+  WebQuery http://192.168.178.59/cm?cmnd=Power%20TOGGLE
+END ON
+RULE1 1
+```
+Using ```Time#Minute=241``` runs the WebQuery command every day 241 minutes after midnight (0:00), which is 4:01am.
+Several commands can be run using ```BACKLOG```.
 
 More Tasmota projects
 =====================
