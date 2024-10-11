@@ -324,21 +324,22 @@ RULE1 1
 Complex cronjobs with timer-triggered rule
 ==========================================
 
-1. Assign "Relay" to one of the unused GPIOs (Configuration -> Configure Module)
-2. Create a timer for this output (Configuration -> Configure Timer)
-3. Create rules for ON and OFF states:
+1. Create timers with action "Rule" (Configuration -> Configure Timer)
+2. Create a rule for each timer with ```Clock#Timer=<timer>``` indicating the associated timer:
 
 ```
 RULE1
-  ON GPIO0#State=1 DO
+  ON Clock#Timer=1 DO
     WebQuery http://<ip>/cm?cmnd=Power%20ON
   ENDON
-RULE1
-  ON GPIO0#State=0 DO
+RULE2
+  ON Clock#Timer=2 DO
     WebQuery http://<ip>/cm?cmnd=Power%20OFF
   ENDON
 
 BACKLOG RULE1 1; RULE2 1
+```
+
 
 More Tasmota projects
 =====================
