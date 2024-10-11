@@ -283,27 +283,62 @@ ENDON
 RULE1 1
 ```
 
-or start charging your car every day 241 minutes after midnight (0:00), which is 4:01am, by calling the [wbec](https://github.com/steff393/wbec) (for [Heidelberg](https://www.amperfied.de/2022/11/21/wbec-fuer-heidelberg-wallbox-energy-control-blog/) chargers) API:
+or start charging your car every day 185 minutes after midnight (0:00), which is 3:05am, and stop (put into pv only mode) at 7:55am by calling the [wbec](https://github.com/steff393/wbec) (for [Heidelberg](https://www.amperfied.de/2022/11/21/wbec-fuer-heidelberg-wallbox-energy-control-blog/) chargers) API:
 
 ```
-RULE1 ON Time#Minute=241 DO
-  WebQuery http://<ip>/json?id=0&pvMode=1&currLim=60
-ENDON
+MEM1=185
+MEM2=475
+RULE1
+  ON Time#Minute=%MEM1% DO
+    WebQuery http://<ip>/json?id=0&pvMode=1&currLim=60
+  ENDON
+RULE2
+  ON Time#Minute=%MEM2% DO
+    WebQuery http://<ip>/json?id=0&pvMode=2&currLim=160
+  ENDON
+
+RULE1 1
+RULE2 2
 ```
 Several commands can be run using ```BACKLOG```.
 
 One more example to toggle a switch every 10min between 12:00 and 18:00:
 ```
-PulseTime 700
+# 10min = 100+600
+MEM1=100+60
+PulseTime %MEM1%
+# 12:00=12*60[min]=720
+MEM2=12*60
+# 18:00=18*60[min]=1080
+MEM3=18*60
+MEM4=20
+RULE1
+  ON time#minute<%MEM2% DO break
+  ON time#minute>=%MEM3% DO break
+  ON time#minute|%MEM4% DO power1 on
+ENDON
 
-Rule1
-  on time#minute<720 do break
-  on time#minute>=1080 do break
-  on time#minute|20 do power1 on
-endon
-
-Rule1 1
+RULE1 1
 ```
+
+Complex cronjobs with timer-triggered rule
+==========================================
+
+1. Assign "Relay" to one of the unused GPIOs (Configuration -> Configure Module)
+2. Create a timer for this output (Configuration -> Configure Timer)
+3. Create rules for ON and OFF states:
+
+```
+RULE1
+  ON GPIO0#State=1 DO
+    WebQuery http://<ip>/cm?cmnd=Power%20ON
+  ENDON
+RULE1
+  ON GPIO0#State=0 DO
+    WebQuery http://<ip>/cm?cmnd=Power%20OFF
+  ENDON
+
+BACKLOG RULE1 1; RULE2 1
 
 More Tasmota projects
 =====================
