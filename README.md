@@ -280,6 +280,8 @@ E.g. toggle another Tasmota's relay ever minute:
 RULE1 ON Time#Minute|1 DO
   WebQuery http://<ip>/cm?cmnd=Power%20TOGGLE
 ENDON
+```
+```
 RULE1 1
 ```
 
@@ -296,7 +298,8 @@ RULE2
   ON Time#Minute=%MEM2% DO
     WebQuery http://<ip>/json?id=0&pvMode=2&currLim=160
   ENDON
-
+```
+```
 RULE1 1
 RULE2 2
 ```
@@ -317,7 +320,8 @@ RULE1
   ON time#minute>=%MEM3% DO break
   ON time#minute|%MEM4% DO power1 on
 ENDON
-
+```
+```
 RULE1 1
 ```
 
@@ -325,19 +329,19 @@ Complex cronjobs with timer-triggered rule
 ==========================================
 
 1. Create timers with action "Rule" (Configuration -> Configure Timer)
-2. Create a rule for each timer with ```Clock#Timer=<timer>``` indicating the associated timer:
+2. Create a rule with ```Clock#Timer=<timer>``` indicating the associated timer:
 
 ```
 RULE1
   ON Clock#Timer=1 DO
     WebQuery http://<ip>/cm?cmnd=Power%20ON
   ENDON
-RULE2
   ON Clock#Timer=2 DO
     WebQuery http://<ip>/cm?cmnd=Power%20OFF
   ENDON
-
-BACKLOG RULE1 1; RULE2 1
+```
+```
+RULE1 1
 ```
 
 
