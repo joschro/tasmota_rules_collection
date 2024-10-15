@@ -214,12 +214,13 @@ Rule1
 ```
 Rule2
   On Power1#State=0 Do
-    Var1 ALARM_OFF
+    BACKLOG Var1 ALARM_OFF; WebQuery http://ntfy.sh/<topic> POST [Title: <title for alarm off>] <message for alarm off>
   EndOn
   On Power1#State=1 Do
-    Var1 ALARM_ON
+   BACKLOG Var1 ALARM_ON; WebQuery http://ntfy.sh/<topic> POST [Title: <title for alarm on] <message for alarm on>
   EndOn
 ```
+This example includes a notification via the free notification service ntfy.sh.
 
 Activate with 
 ```
