@@ -317,7 +317,7 @@ PulseTime %MEM1%
 MEM2=12*60
 # 18:00=18*60[min]=1080
 MEM3=18*60
-MEM4=20
+MEM4 20
 RULE1
   ON time#minute<%MEM2% DO break
   ON time#minute>=%MEM3% DO break
