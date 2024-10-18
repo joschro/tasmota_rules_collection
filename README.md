@@ -289,15 +289,17 @@ RULE1 1
 or start charging your car every day 185 minutes after midnight (0:00), which is 3:05am, and stop (put into pv only mode) at 7:55am by calling the [wbec](https://github.com/steff393/wbec) (for [Heidelberg](https://www.amperfied.de/2022/11/21/wbec-fuer-heidelberg-wallbox-energy-control-blog/) chargers) API:
 
 ```
-MEM1=185
-MEM2=475
+MEM1=185   # trigger for rule1 in minutes after midnight
+MEM2=475   # trigger for rule2 in minutes after midnight
+MEM3=60    # charging limit for grid mode [A * 10 ]
+MEM4=160   # charging limit for PV mode [A * 10]
 RULE1
   ON Time#Minute=%MEM1% DO
-    WebQuery http://<ip>/json?id=0&pvMode=1&currLim=60
+    WebQuery http://<ip>/json?id=0&pvMode=1&currLim=%MEM3%
   ENDON
 RULE2
   ON Time#Minute=%MEM2% DO
-    WebQuery http://<ip>/json?id=0&pvMode=2&currLim=160
+    WebQuery http://<ip>/json?id=0&pvMode=2&currLim=%MEM4%
   ENDON
 ```
 ```
@@ -335,10 +337,10 @@ Complex cronjobs with timer-triggered rule
 ```
 RULE1
   ON Clock#Timer=1 DO
-    WebQuery http://<ip>/cm?cmnd=Power%20ON
+    BACKLOG WebQuery http://<ip>/cm?cmnd=Power%20ON ; WebQuery http://ntfy.sh/<topic> POST [Title: <title for power on>] <message for power on>
   ENDON
   ON Clock#Timer=2 DO
-    WebQuery http://<ip>/cm?cmnd=Power%20OFF
+    BACKLOG WebQuery http://<ip>/cm?cmnd=Power%20OFF ; WebQuery http://ntfy.sh/<topic> POST [Title: <title for power off>] <message for power off>
   ENDON
 ```
 ```
