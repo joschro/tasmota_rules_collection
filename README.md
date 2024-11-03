@@ -81,6 +81,28 @@ Rule1
 ```
 Activate rule with ```Rule1 1``` in the console. Using the variable of type ```Mem``` ensures they survive a reboot of the device. To change the timing, just re-enter ```Mem1 <x>``` and ```Mem2 <y>``` and restart the device.
 
+Coffee mill
+-----------
+Turns off after <MEM1> seconds pressing the button (a high voltage detector connected to GPIO0, configured as a switch), then waits 3 seconds before reset. Relay connected to GPIO2.
+
+```
+BACKLOG MEM1 14; PulseTime 30
+```
+```
+RULE1
+  ON Switch1#state=1 DO
+    RuleTimer1 %MEM1%
+  ENDON
+  ON Rules#Timer=1 DO
+    Power1 ON
+  ENDON
+```
+
+Activate with
+```
+rule1 1
+```
+
 Pulsing LED light (Dodow)
 -------------------------
 When turned on, the Dodow device throws a pulsing blue LED spot to the ceiling for you to breathe with the pulsing light and fall into sleep more easily.
