@@ -83,7 +83,7 @@ Activate rule with ```Rule1 1``` in the console. Using the variable of type ```M
 
 Coffee mill
 -----------
-Turns off after <MEM1> seconds pressing the button (a high voltage detector connected to GPIO0, configured as a switch), then waits 3 seconds before reset. Relay connected to GPIO2.
+Turns off after <MEM1> seconds pressing the button (a high voltage detector like [this](https://www.amazon.de/dp/B08HQ7K14H) connected to GPIO0, configured as a switch), then waits 3 seconds before reset. Relay connected to GPIO2.
 
 ```
 BACKLOG MEM1 14; PulseTime 30
