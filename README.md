@@ -369,6 +369,9 @@ RULE1
 RULE1 1
 ```
 
+Watchdog - turn device off and on if not reachable
+==================================================
+see https://tasmota.github.io/docs/Rules/#watchdog-for-wi-fi-router-or-modem
 
 More Tasmota projects
 =====================
