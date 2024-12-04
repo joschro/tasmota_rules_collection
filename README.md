@@ -369,6 +369,28 @@ RULE1
 RULE1 1
 ```
 
+Charging a SonnenBatterie every night when Tibber price is low
+==============================================================
+```
+# SonnenBatterie API token:
+MEM1=Auth-Token: <YourSonnenBattAPIToken>
+# SonnenBatterie API URL:
+MEM2=http://<YourSonnenBatteryIP>:80/api/v2
+# charging limit in W
+MEM3=4600
+
+RULE1
+  ON Clock#Timer=1 DO
+    BACKLOG WebQuery %MEM2%/configurations PUT [%MEM1%] EM_OperatingMode=1 ; WebQuery %MEM2%/setpoint/charge/%MEM3% POST [%MEM1%] ; WebQuery http://ntfy.sh/wasserstr56info POST [Title: SonnenBattery state changed] SonnenBattery now charging with %MEM3%W
+  ENDON
+  ON Clock#Timer=2 DO
+    BACKLOG WebQuery %MEM2%/configurations PUT [%MEM1%] EM_OperatingMode=2; WebQuery http://ntfy.sh/wasserstr56info POST [Title: SonnenBattery state changed] SonnenBattery now in auto mode
+  ENDON
+```
+```
+RULE1 1
+```
+
 Watchdog - turn device off and on if not reachable
 ==================================================
 see https://tasmota.github.io/docs/Rules/#watchdog-for-wi-fi-router-or-modem
