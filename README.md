@@ -371,6 +371,7 @@ RULE1 1
 
 Charging a SonnenBatterie every night when Tibber price is low
 ==============================================================
+=== Work in progress - not working atm ===
 ```
 # SonnenBatterie API token:
 MEM1=Auth-Token: <YourSonnenBattAPIToken>
