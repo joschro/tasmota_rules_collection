@@ -87,17 +87,22 @@ Coffee mill
 
 ```
 # invert PulseTimer: when device is turned OFF, it will be turned on again after <PulseTime> (10 is 1s)
-BACKLOG PowerOnState 5; MEM1 14; PulseTime 10
+BACKLOG PowerOnState 5; MEM1 10; PulseTime 10; VAR1 0
 ```
 ```
 # if device detects power of more than 10W, start a timer and turn off after <MEM1> seconds
 RULE1
   ON Energy#Power>10 DO
-    RuleTimer1 %MEM1%
+    IF(%VAR1%==0)
+      BACKLOG RuleTimer1 %MEM1%; VAR1=1; WebQuery http://ntfy.sh/<topic> POST [Title: Coffee mill] running for %MEM1% sec
+    ENDIF
   ENDON
   ON Rules#Timer=1 DO
-    Power1 OFF
+    BACKLOG Power1 OFF; VAR1=0; WebQuery http://ntfy.sh/<topic> POST [Title: Coffee mill] stopped 
   ENDON
+  ON System#Boot Do
+    VAR1=0
+  EndOn
 ```
 
 Activate with
