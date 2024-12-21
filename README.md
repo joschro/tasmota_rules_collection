@@ -94,14 +94,14 @@ BACKLOG PowerOnState 5; MEM1 10; PulseTime 10; VAR1 0
 RULE1
   ON Energy#Power>10 DO
     IF(%VAR1%==0)
-      BACKLOG RuleTimer1 %MEM1%; VAR1=1; WebQuery http://ntfy.sh/<topic> POST [Title: Coffee mill] running for %MEM1% sec
+      BACKLOG RuleTimer1 %MEM1%; VAR1 1; WebQuery http://ntfy.sh/wasserstr56info POST [Title: Coffee mill] running for %MEM1% sec
     ENDIF
   ENDON
   ON Rules#Timer=1 DO
-    BACKLOG Power1 OFF; VAR1=0; WebQuery http://ntfy.sh/<topic> POST [Title: Coffee mill] stopped 
+    BACKLOG Power1 OFF; VAR1 0; WebQuery http://ntfy.sh/wasserstr56info POST [Title: Coffee mill] stopped 
   ENDON
   ON System#Boot Do
-    VAR1=0
+    VAR1 0
   EndOn
 ```
 
