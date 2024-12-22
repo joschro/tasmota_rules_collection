@@ -87,7 +87,7 @@ Coffee mill
 
 ```
 # invert PulseTimer: when device is turned OFF, it will be turned on again after <PulseTime> (10 is 1s)
-BACKLOG PowerOnState 5; MEM1 10; PulseTime 10; VAR1 0
+BACKLOG PowerOnState 5; MEM1 14; PulseTime 20; VAR1 0
 ```
 ```
 # if device detects power of more than 10W, start a timer and turn off after <MEM1> seconds
@@ -98,12 +98,13 @@ RULE1
     ENDIF
   ENDON
   ON Rules#Timer=1 DO
-    BACKLOG Power1 OFF; VAR1 0; WebQuery http://ntfy.sh/wasserstr56info POST [Title: Coffee mill] stopped 
+    BACKLOG Power1 OFF; VAR1 0; WebQuery http://ntfy.sh/wasserstr56info POST [Title: Coffee mill] stopped
   ENDON
   ON System#Boot Do
     VAR1 0
   EndOn
 ```
+
 
 Activate with
 ```
@@ -112,19 +113,24 @@ RULE1 1
 
 - Using a built-in relay
 
-Turns off after <MEM1> seconds pressing the button (a high voltage detector like [this](https://www.amazon.de/dp/B08HQ7K14H) connected to GPIO0, configured as a switch), then waits 3 seconds before reset. Relay connected to GPIO2.
+Turns off after <MEM1> seconds pressing the button (a high voltage detector like [this](https://www.amazon.de/dp/B08HQ7K14H) connected to GPIO0, configured as a switch), then waits 2 seconds before reset. Relay connected to GPIO2 (inverted operation: connects by default, disconnects on activation).
 
 ```
-BACKLOG MEM1 14; PulseTime 30
+BACKLOG MEM1 14; PulseTime 20; VAR1 0
 ```
 ```
 RULE1
   ON Switch1#state=1 DO
-    RuleTimer1 %MEM1%
+    IF(%VAR1%==0)
+      BACKLOG RuleTimer1 %MEM1%; VAR1 1; WebQuery http://ntfy.sh/wasserstr56info POST [Title: Coffee mill] running for %MEM1% sec
+    ENDIF
   ENDON
   ON Rules#Timer=1 DO
-    Power1 ON
+    BACKLOG Power1 ON; VAR1 0; WebQuery http://ntfy.sh/wasserstr56info POST [Title: Coffee mill] stopped
   ENDON
+  ON System#Boot Do
+    VAR1 0
+  EndOn
 ```
 
 Activate with
