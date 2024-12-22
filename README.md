@@ -85,30 +85,53 @@ Coffee mill
 -----------
 - Using an external power plug, e.g. Shelly Plug S
 
+Invert PulseTimer: when device is turned OFF, it will be turned on again after <PulseTime> (10 is 1s):
 ```
-# invert PulseTimer: when device is turned OFF, it will be turned on again after <PulseTime> (10 is 1s)
 BACKLOG PowerOnState 5; MEM1 14; PulseTime 20; VAR1 0
 ```
+
+If device detects power of more than 10W, start a timer and turn off after <MEM1> seconds:
 ```
-# if device detects power of more than 10W, start a timer and turn off after <MEM1> seconds
 RULE1
   ON Energy#Power>10 DO
     IF(%VAR1%==0)
-      BACKLOG RuleTimer1 %MEM1%; VAR1 1; WebQuery http://ntfy.sh/wasserstr56info POST [Title: Coffee mill] running for %MEM1% sec
+      BACKLOG RuleTimer1 %MEM1%; VAR1 1; WebQuery http://ntfy.sh/<topic> POST [Title: Coffee mill] running for %MEM1% sec
     ENDIF
   ENDON
   ON Rules#Timer=1 DO
-    BACKLOG Power1 OFF; VAR1 0; WebQuery http://ntfy.sh/wasserstr56info POST [Title: Coffee mill] stopped
+    BACKLOG Power1 OFF; VAR1 0; WebQuery http://ntfy.sh/<topic> POST [Title: Coffee mill] stopped
   ENDON
   ON System#Boot Do
     VAR1 0
   EndOn
 ```
 
-
 Activate with
 ```
 RULE1 1
+```
+
+To add buttons for increasing/decreasing the milling time, add "Relay" 2 and "Relay" 3 in the device config to add two dummy web buttons on the unused GPIOs (e.g. GPIO3 and GPIO4); add a "Counter" 1 on e.g. GPIO16 to show the MEM1 value in the web gui:
+
+```
+BACKLOG WebButton2 Länger / + ; WebButton3 Kürzer / - ; Counter1 20
+```
+```
+RULE2
+  ON Power2#State=0 DO
+    Counter1 +1
+  ENDON
+  ON Power3#State=0 DO
+    Counter1 -1
+  ENDON
+  ON Counter#C1!=%MEM1% DO
+    MEM1 %value%
+  ENDON
+```
+
+Activate with
+```
+RULE2 1
 ```
 
 - Using a built-in relay
@@ -122,11 +145,11 @@ BACKLOG MEM1 14; PulseTime 20; VAR1 0
 RULE1
   ON Switch1#state=1 DO
     IF(%VAR1%==0)
-      BACKLOG RuleTimer1 %MEM1%; VAR1 1; WebQuery http://ntfy.sh/wasserstr56info POST [Title: Coffee mill] running for %MEM1% sec
+      BACKLOG RuleTimer1 %MEM1%; VAR1 1; WebQuery http://ntfy.sh/<topic> POST [Title: Coffee mill] running for %MEM1% sec
     ENDIF
   ENDON
   ON Rules#Timer=1 DO
-    BACKLOG Power1 ON; VAR1 0; WebQuery http://ntfy.sh/wasserstr56info POST [Title: Coffee mill] stopped
+    BACKLOG Power1 ON; VAR1 0; WebQuery http://ntfy.sh/<topic> POST [Title: Coffee mill] stopped
   ENDON
   ON System#Boot Do
     VAR1 0
