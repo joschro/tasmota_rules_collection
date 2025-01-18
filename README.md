@@ -468,3 +468,17 @@ Useful links:
 * https://youtu.be/VuXpzKetOhc
 * https://www.smarthomejetzt.de/gaszaehler-mit-wemos-d1-mini-mit-reed-kontakt-pullup-widerstand-und-tasmota-smart-machen/
 * https://homeitems.de/gas-und-wasserzaehler-mit-tasmota-digitalisieren/
+
+Shutter automation with Shelly Plus 2PM
+---------------------------------------
+From https://tasmota.github.io/docs/Blinds-and-Shutters/#autosetup-only-shelly-plus-2pm-esp32-based
+```
+SetOption80 1
+Backlog Shuttersetopen ; Shutterclose
+Backlog Interlock 1,2 ; Interlock on ; Shutterrelay1 1 ; Shuttersetup
+```
+Repeat if it fails.
+It can be controlled with e.g.
+```
+ShutterPosition 50
+```
