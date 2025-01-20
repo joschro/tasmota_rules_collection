@@ -472,9 +472,17 @@ Useful links:
 Shutter automation with Shelly Plus 2PM
 ---------------------------------------
 From https://tasmota.github.io/docs/Blinds-and-Shutters/#autosetup-only-shelly-plus-2pm-esp32-based
+
+Setup Shelly to act as a shutter control:
 ```
-SetOption80 1
+Backlog SetOption80 1 ; Shuttermode 1
+```
+If shutter is completely open, you can force it to close:
+```
 Backlog Shuttersetopen ; Shutterclose
+```
+Automatic setup of open and close position; shutter needs to be in closed position:
+```
 Backlog Interlock 1,2 ; Interlock on ; Shutterrelay1 1 ; Shuttersetup
 ```
 Repeat if it fails.
