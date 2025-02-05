@@ -427,6 +427,35 @@ RULE1
 RULE1 1
 ```
 
+Send temperature value to Google Sheet via Google Forms
+=======================================================
+###WIP###
+1. Follow https://stackoverflow.com/questions/71714110/can-you-submit-a-restful-request-to-a-google-forms-api to create a Google form and extract the URL to submit a value.
+2. Make sure to "Publish" the Google Form after creation
+
+Adjust the time between updates to your preferences: ```Mem1``` is delay in seconds until the next temperature value is being submitted.
+
+```
+Mem1 300
+```
+```
+Rule1
+  ON tele-DS18B20#Temperature DO
+    Var1 %value%
+  ENDON
+  ON Rules#Timer=1 do
+    BACKLOG WebQuery https://docs.google.com/forms/d/e/<your-forms-id>/formResponse?entry.408302265=%VAR1%; RuleTimer1 %MEM1%
+  ENDON
+  ON System#Boot do
+    RuleTimer1 %Mem1%
+  ENDON
+```
+Activate with
+```
+Rule1 1
+```
+in the console.
+
 Charging a SonnenBatterie every night when Tibber price is low
 ==============================================================
 === Work in progress - not working atm ===
