@@ -310,6 +310,54 @@ Rule1 1
 Rule2 1
 ```
 
+Temperature guard / Temperaturwächter
+=====================================
+Using parasite mode, it is very easy to build a simple DS18x20 (DS1820, DS18B20, DS18S20 etc.) temperature sensor based temperature guard with only 2 wires.
+
+1. connect both GND and 3.3V of the DS18x20 sensor (pins 1 and 3 in https://tasmota.github.io/docs/DS18x20/#wiring) to the GND pin of an ESP8266, e.g. WEMOS D1 Mini
+2. connect the data pin to one of the GPIOs, e.g. GPIO14 (D5 on the WEMOS)
+3. in Settings, configure this GPIO as "DS18x20" and a free GPIO, e.g. GPIO5 (D1 on the WEMOS) as "Relay"; this is needed to display and reset an alarm on the device
+
+Now the built-in pull-up resistor needs to be activated in the console:
+```
+SetOption74 1
+```
+After a reboot, the device should display the temperatur information.
+
+Next step is to create a rule that fires an alarm when the temperature is above or below a certain threshold. We basically use the same code as in the above alarm device example:
+
+Temperature threshold:
+```
+MEM1 -12
+```
+```
+VAR1 ALARM_OFF
+```
+```
+RULE1
+  ON DS18S20#Temperature>%MEM1% DO
+    IF (%VAR1%=ALARM_OFF) VAR1 ALARM_ON; Power1 1
+  ENDON
+```
+```
+RULE2
+  ON Power1#State=0 DO
+    BACKLOG VAR1 ALARM_OFF; WebQuery http://ntfy.sh/<topic> POST [Title: <title for alarm off>] <message for alarm off>
+  EndOn
+  ON Power1#State=1 DO
+   BACKLOG VAR1 ALARM_ON; WebQuery http://ntfy.sh/<topic> POST [Title: <title for alarm on] <message for alarm on>
+  ENDON
+```
+This example includes a notification via the free notification service ntfy.sh.
+
+Activate with 
+```
+RULE1 1
+```
+```
+RULE2 1
+```
+
 Pulse counter
 =============
 Example use case is an analog water counter that short cuts two wires at every 1/1000 m³ (1l).
