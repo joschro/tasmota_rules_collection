@@ -280,34 +280,36 @@ WebButton1 Alarm On/Off
 
 Example with ```A0``` configured as ```ADC Input```, ```D1/GPIO5``` configured as ```Relay``` ```1``` and trigger set at 500:
 ```
-Mem1 500
+MEM1 500
 ```
 ```
-Var1 ALARM_OFF
+VAR1 ALARM_OFF
 ```
 ```
-Rule1
-  On ANALOG#A0>%Mem1% Do
-    If (%var1%=ALARM_OFF) Var1 ALARM_ON; Power1 1
+RULE1
+  ON ANALOG#A0>%Mem1% DO
+    IF (%VAR1%=ALARM_OFF)
+      VAR1 ALARM_ON; Power1 1
+    ENDIF
+  ENDON
+```
+```
+RULE2
+  ON Power1#State=0 DO
+    BACKLOG VAR1 ALARM_OFF; WebQuery http://ntfy.sh/<topic> POST [Title: <title for alarm off>] <message for alarm off>
   EndOn
-```
-```
-Rule2
-  On Power1#State=0 Do
-    BACKLOG Var1 ALARM_OFF; WebQuery http://ntfy.sh/<topic> POST [Title: <title for alarm off>] <message for alarm off>
-  EndOn
-  On Power1#State=1 Do
-   BACKLOG Var1 ALARM_ON; WebQuery http://ntfy.sh/<topic> POST [Title: <title for alarm on] <message for alarm on>
-  EndOn
+  ON Power1#State=1 DO
+   BACKLOG VAR1 ALARM_ON; WebQuery http://ntfy.sh/<topic> POST [Title: <title for alarm on] <message for alarm on>
+  ENDON
 ```
 This example includes a notification via the free notification service ntfy.sh.
 
 Activate with 
 ```
-Rule1 1
+RULE1 1
 ```
 ```
-Rule2 1
+RULE2 1
 ```
 
 Temperature guard / Temperaturwächter
