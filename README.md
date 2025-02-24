@@ -268,10 +268,11 @@ An ESP8266 can measure an analog signal / voltage on the ```A0``` pin; to enable
 
 Generic rules:
 ```
-Mem1 <trigger level>
-Var1 ALARM_OFF
-Rule1 On [Sensor]#[ValueName]=%Mem1% do Power1 1 EndOn On [Sensor]#[ValueName]!=%Mem1% Do Power1 0 EndOn
-Rule2 On Power2#State=0 Do Var1 %Mem1% EndOn On Power2#State=1 Do Var1 0 EndOn
+MEM1 <trigger level>
+VAR1 ALARM_OFF
+RULE1 ON [Sensor]#[ValueName]=%MEM1% do IF (%VAR1%=ALARM_OFF) VAR1 ALARM_ON ; Power1 1 ENDIF ENDON
+      ON [Sensor]#[ValueName]!=%MEM1% DO IF (%VAR1%=ALARM_ON) VAR1 ALARM_OFF ; Power1 0 ENDIF ENDON
+RULE2 ON Power2#State=0 Do VAR1 %MEM1% ENDON ON Power2#State=1 Do VAR1 0 ENDON
 ```
 To reset the alarm, use a virtual button by adding a "Relay" config on one of the free GPIOs:
 ```
@@ -310,6 +311,9 @@ RULE1 1
 ```
 ```
 RULE2 1
+```
+```
+WebButton1 Alarm On/Off
 ```
 
 Temperature guard / Temperaturwächter
