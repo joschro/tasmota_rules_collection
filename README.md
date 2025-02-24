@@ -317,6 +317,10 @@ Using parasite mode, it is very easy to build a simple DS18x20 (DS1820, DS18B20,
 1. connect both GND and 3.3V of the DS18x20 sensor (pins 1 and 3 in https://tasmota.github.io/docs/DS18x20/#wiring) to the GND pin of an ESP8266, e.g. WEMOS D1 Mini
 2. connect the data pin to one of the GPIOs, e.g. GPIO14 (D5 on the WEMOS)
 3. in Settings, configure this GPIO as "DS18x20" and a free GPIO, e.g. GPIO5 (D1 on the WEMOS) as "Relay"; this is needed to display and reset an alarm on the device
+4. rename the relay button in the frontend:
+   ```
+   WebButton1 Alarm <p> On/Off
+   ```
 
 Now the built-in pull-up resistor needs to be activated in the console:
 ```
