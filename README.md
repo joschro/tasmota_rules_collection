@@ -275,7 +275,7 @@ Rule2 On Power2#State=0 Do Var1 %Mem1% EndOn On Power2#State=1 Do Var1 0 EndOn
 ```
 To reset the alarm, use a virtual button by adding a "Relay" config on one of the free GPIOs:
 ```
-WebButton1 Alarm <p> On/Off
+WebButton1 Alarm On/Off
 ```
 
 Example with ```A0``` configured as ```ADC Input```, ```D1/GPIO5``` configured as ```Relay``` ```1``` and trigger set at 500:
@@ -319,7 +319,7 @@ Using parasite mode, it is very easy to build a simple DS18x20 (DS1820, DS18B20,
 3. in Settings, configure this GPIO as "DS18x20" and a free GPIO, e.g. GPIO5 (D1 on the WEMOS) as "Relay"; this is needed to display and reset an alarm on the device
 4. rename the relay button in the frontend:
    ```
-   WebButton1 Alarm <p> On/Off
+   WebButton1 Alarm On/Off
    ```
 
 Now the built-in pull-up resistor needs to be activated in the console:
@@ -340,7 +340,9 @@ VAR1 ALARM_OFF
 ```
 RULE1
   ON DS18S20#Temperature>%MEM1% DO
-    IF (%VAR1%=ALARM_OFF) VAR1 ALARM_ON; Power1 1
+    IF (%VAR1%=ALARM_OFF)
+      VAR1 ALARM_ON; Power1 1
+    ENDIF
   ENDON
 ```
 ```
