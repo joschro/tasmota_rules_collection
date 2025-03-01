@@ -300,7 +300,7 @@ RULE2
     BACKLOG VAR1 ALARM_OFF; WebQuery http://ntfy.sh/<topic> POST [Title: <title for alarm off>] <message for alarm off>
   EndOn
   ON Power1#State=1 DO
-   BACKLOG VAR1 ALARM_ON; WebQuery http://ntfy.sh/<topic> POST [Title: <title for alarm on] <message for alarm on>
+   BACKLOG VAR1 ALARM_ON; WebQuery http://ntfy.sh/<topic> POST [Title: <title for alarm on|Priority:max|Tags:rotating_light] <message for alarm on>
   ENDON
 ```
 This example includes a notification via the free notification service ntfy.sh.
@@ -357,7 +357,7 @@ RULE2
     BACKLOG VAR1 ALARM_OFF; WebQuery http://ntfy.sh/<topic> POST [Title: <title for alarm off>] <message for alarm off>
   EndOn
   ON Power1#State=1 DO
-   BACKLOG VAR1 ALARM_ON; WebQuery http://ntfy.sh/<topic> POST [Title: <title for alarm on] <message for alarm on>
+   BACKLOG VAR1 ALARM_ON; WebQuery http://ntfy.sh/<topic> POST [Title: <title for alarm on|Priority:max|Tags:rotating_light] <message for alarm on>
   ENDON
 ```
 This example includes a notification via the free notification service ntfy.sh.
