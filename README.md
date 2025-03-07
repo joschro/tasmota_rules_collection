@@ -567,10 +567,10 @@ is available if compiled with option "#define DS18x20_USE_ID_ALIAS" in user_conf
 RULE3
   ON System#Boot DO
     Backlog
-      DS18Alias B40000006B772F28,Vorlauf_Heiz.;
-      DS18Alias 270000006B026C28,Rücklauf_Heiz.;
-      DS18Alias C80000006B651D28,Vorlauf_Fussb.;
-      DS18Alias 3B00000082E0AC28,Rücklauf_Fussb.;
+      DS18Alias B40000006B772F28,Vorlauf_Heiz;
+      DS18Alias 270000006B026C28,Rücklauf_Heiz;
+      DS18Alias C80000006B651D28,Vorlauf_Fussb;
+      DS18Alias 3B00000082E0AC28,Rücklauf_Fussb;
       DS18Alias 210000006B6DC328,WarmWasser;
       DS18Alias F30000006ABC4C28,Zirkulation;
       DS18Alias BE0000008321D028,Vorlauf_Solar;
