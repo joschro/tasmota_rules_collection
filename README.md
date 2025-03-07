@@ -556,6 +556,60 @@ RULE1 1
 RULE2 1
 ```
 
+Heating temperatures
+====================
+The command 
+```
+DS18Alias 0123456789ABCDEF,AliasMax16Chars
+```
+is available if compiled with option "#define DS18x20_USE_ID_ALIAS" in user_config_override.h; can be used to assign useful names for sensors:
+```
+RULE3
+  ON System#Boot DO
+    Backlog
+      DS18Alias B40000006B772F28,Vorlauf_Heiz.;
+      DS18Alias 270000006B026C28,Rücklauf_Heiz.;
+      DS18Alias C80000006B651D28,Vorlauf_Fussb.;
+      DS18Alias 3B00000082E0AC28,Rücklauf_Fussb.;
+      DS18Alias 210000006B6DC328,WarmWasser;
+      DS18Alias F30000006ABC4C28,Zirkulation;
+      DS18Alias BE0000008321D028,Vorlauf_Solar;
+      DS18Alias 940000006B669628,Rücklauf_Solar;
+      DS18Alias A8000801CA1EF010,Heizungsraum
+    ENDON
+```
+```
+RULE3 1
+```
+To enable more than 8 DS18x20 sensors, add option "DS18X20_MAX_SENSORS" to user_config_override.h:
+```
+#ifdef FIRMWARE_HEATING
+    // This line will issue a warning during the build (yellow in 
+    // VSCode) so you see which section is used
+    #warning **** Build: HEATING ****
+    // -- CODE_IMAGE_STR is the name shown between brackets on the 
+    //    Information page or in INFO MQTT messages
+    #undef CODE_IMAGE_STR
+    #define CODE_IMAGE_STR "heating"
+
+    // Put here your override for firmware tasmota-heating
+    #define DS18X20_MAX_SENSORS 18
+    #define DS18x20_USE_ID_ALIAS
+
+#endif
+```
+Make it available in platformio_tasmota_cenv.ini for compiling:
+```
+[env:tasmota-heating]
+extends                 = env:tasmota-4M
+board                   = esp8266_4M2M
+build_flags             = ${env.build_flags} -DFIRMWARE_HEATING
+```
+Run with
+```
+pio run -e tasmota-heating
+```
+
 Watchdog - turn device off and on if not reachable
 ==================================================
 see https://tasmota.github.io/docs/Rules/#watchdog-for-wi-fi-router-or-modem
