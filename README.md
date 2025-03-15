@@ -312,8 +312,15 @@ RULE1 1
 ```
 RULE2 1
 ```
+
+
+
+To set the state correctly when using MQTT, add the following rule:
 ```
-WebButton1 Alarm On/Off
+RULE3 ON Power1#state DO Publish stat/topic/POWER %value% ENDON
+```
+```
+RULE3 1
 ```
 
 Temperature guard / Temperaturwächter
@@ -368,6 +375,14 @@ RULE1 1
 ```
 ```
 RULE2 1
+```
+
+To set the state correctly when using MQTT, add the following rule:
+```
+RULE3 ON Power1#state DO Publish stat/topic/POWER %value% ENDON
+```
+```
+RULE3 1
 ```
 
 Pulse counter
@@ -555,6 +570,15 @@ RULE1 1
 ```
 RULE2 1
 ```
+
+To set the state correctly when using MQTT, add the following rule:
+```
+RULE3 ON Power1#state DO Publish stat/topic/POWER %value% ENDON
+```
+```
+RULE3 1
+```
+
 
 Heating temperatures
 ====================
