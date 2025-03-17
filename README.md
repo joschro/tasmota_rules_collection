@@ -297,10 +297,13 @@ RULE1
 ```
 RULE2
   ON Power1#State=OFF DO
-    BACKLOG VAR1 ALARM_OFF; WebQuery http://ntfy.sh/<topic> POST [Title: <title for alarm off>] <message for alarm off>
+    BACKLOG VAR1 ALARM_OFF; WebQuery http://ntfy.sh/<topic> POST [Title: <title for alarm off>] <message for alarm off> http://%VAR2%
   EndOn
   ON Power1#State=ON DO
-   BACKLOG VAR1 ALARM_ON; WebQuery http://ntfy.sh/<topic> POST [Title: <title for alarm on|Priority:max|Tags:rotating_light] <message for alarm on>
+   BACKLOG VAR1 ALARM_ON; WebQuery http://ntfy.sh/<topic> POST [Title: <title for alarm on|Priority:max|Tags:rotating_light] <message for alarm on> http://%VAR2%
+  ENDON
+  ON StatusNET#IPAddress DO
+   VAR2 %value%
   ENDON
 ```
 This example includes a notification via the free notification service ntfy.sh.
@@ -312,8 +315,6 @@ RULE1 1
 ```
 RULE2 1
 ```
-
-
 
 To set the state correctly when using MQTT, add the following rule:
 ```
@@ -361,10 +362,13 @@ RULE1
 ```
 RULE2
   ON Power1#State=OFF DO
-    BACKLOG VAR1 ALARM_OFF; WebQuery http://ntfy.sh/<topic> POST [Title: <title for alarm off>] <message for alarm off>
+    BACKLOG VAR1 ALARM_OFF; WebQuery http://ntfy.sh/<topic> POST [Title: <title for alarm off>] <message for alarm off> http://%VAR2%
   EndOn
-  ON Power1#State=1 DO
-   BACKLOG VAR1 ALARM_ON; WebQuery http://ntfy.sh/<topic> POST [Title: <title for alarm on|Priority:max|Tags:rotating_light] <message for alarm on>
+  ON Power1#State=ON DO
+   BACKLOG VAR1 ALARM_ON; WebQuery http://ntfy.sh/<topic> POST [Title: <title for alarm on|Priority:max|Tags:rotating_light] <message for alarm on> http://%VAR2%
+  ENDON
+  ON StatusNET#IPAddress DO
+   VAR2 %value%
   ENDON
 ```
 This example includes a notification via the free notification service ntfy.sh.
