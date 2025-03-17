@@ -63,17 +63,17 @@ Mem2 1200
 ```
 ```
 Rule1
-  On power1#state=1 Do 
+  On Power1#state=ON Do 
     Backlog Power1 %value%; RuleTimer1 %Mem1%
   Endon 
   On Rules#Timer=1 Do
-    Power1 off
+    Power1 OFF
   EndOn 
-  On Power1#State=0 do 
+  On Power1#State=OFF do 
     Backlog Power1 %value%; RuleTimer2 %Mem2%
   EndOn 
   On Rules#Timer=2 do 
-    Power1 on
+    Power1 ON
   Endon
   On System#Boot Do
     Power1 2
@@ -290,16 +290,16 @@ VAR1 ALARM_OFF
 RULE1
   ON ANALOG#A0>%Mem1% DO
     IF (%VAR1%=ALARM_OFF)
-      VAR1 ALARM_ON; Power1 1
+      VAR1 ALARM_ON; Power1 ON
     ENDIF
   ENDON
 ```
 ```
 RULE2
-  ON Power1#State=0 DO
+  ON Power1#State=OFF DO
     BACKLOG VAR1 ALARM_OFF; WebQuery http://ntfy.sh/<topic> POST [Title: <title for alarm off>] <message for alarm off>
   EndOn
-  ON Power1#State=1 DO
+  ON Power1#State=ON DO
    BACKLOG VAR1 ALARM_ON; WebQuery http://ntfy.sh/<topic> POST [Title: <title for alarm on|Priority:max|Tags:rotating_light] <message for alarm on>
   ENDON
 ```
@@ -354,13 +354,13 @@ VAR1 ALARM_OFF
 RULE1
   ON DS18S20#Temperature>%MEM1% DO
     IF (%VAR1%=ALARM_OFF)
-      VAR1 ALARM_ON; Power1 1
+      VAR1 ALARM_ON; Power1 ON
     ENDIF
   ENDON
 ```
 ```
 RULE2
-  ON Power1#State=0 DO
+  ON Power1#State=OFF DO
     BACKLOG VAR1 ALARM_OFF; WebQuery http://ntfy.sh/<topic> POST [Title: <title for alarm off>] <message for alarm off>
   EndOn
   ON Power1#State=1 DO
@@ -476,7 +476,7 @@ MEM4 20
 RULE1
   ON time#minute<%MEM2% DO break
   ON time#minute>=%MEM3% DO break
-  ON time#minute|%MEM4% DO power1 on
+  ON time#minute|%MEM4% DO Power1 ON
 ENDON
 ```
 ```
@@ -557,10 +557,10 @@ WebButton1 Charging On/Off
 ```
 ```
 RULE2
-  ON Power1#State=1 DO
+  ON Power1#State=ON DO
     BACKLOG WebQuery %MEM2%/configurations PUT [%MEM1%] EM_OperatingMode=1 ; WebQuery %MEM2%/setpoint/charge/%MEM3% POST [%MEM1%] ; WebQuery http://ntfy.sh/%MEM4% POST [Title: SonnenBattery state changed] SonnenBattery now charging with %MEM3%W
   EndOn
-  ON Power1#State=0 DO
+  ON Power1#State=OFF DO
    BACKLOG WebQuery %MEM2%/configurations PUT [%MEM1%] EM_OperatingMode=2 ; WebQuery http://ntfy.sh/%MEM4% POST [Title: SonnenBattery state changed] SonnenBattery now in auto mode
   ENDON
   ```
