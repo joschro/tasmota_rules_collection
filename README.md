@@ -296,10 +296,10 @@ RULE1
 ```
 ```
 RULE2
-  ON Power1#State=OFF DO
+  ON Power1#State=0 DO
     BACKLOG VAR1 ALARM_OFF; WebQuery http://ntfy.sh/<topic> POST [Title: <title for alarm off>] <message for alarm off> http://%VAR2%
   EndOn
-  ON Power1#State=ON DO
+  ON Power1#State=1 DO
    BACKLOG VAR1 ALARM_ON; WebQuery http://ntfy.sh/<topic> POST [Title: <title for alarm on|Priority:max|Tags:rotating_light] <message for alarm on> http://%VAR2%
   ENDON
   ON StatusNET#IPAddress DO
@@ -346,31 +346,39 @@ Next step is to create a rule that fires an alarm when the temperature is above 
 
 Temperature threshold:
 ```
-MEM1 -12
+BACKLOG MEM1 -12 ; MEM2 <ntfyTopic>
 ```
-```
-VAR1 ALARM_OFF
-```
+
 ```
 RULE1
   ON DS18S20#Temperature>%MEM1% DO
-    IF (%VAR1%=ALARM_OFF)
-      VAR1 ALARM_ON; Power1 ON
+    IF ((%VAR1%=ALARM_OFF) AND (%VAR2%=1))
+      Power1 ON
     ENDIF
+  ENDON
+  ON Power1#State=0 DO
+    BACKLOG VAR1 ALARM_OFF; WebQuery http://ntfy.sh/%MEM2% POST [Title: <title for alarm off>] <message for alarm off> http://%VAR3%
+  ENDON
+  ON Power1#State=1 DO
+   BACKLOG VAR1 ALARM_ON; WebQuery http://ntfy.sh/%MEM2% POST [Title: <title for alarm on|Priority:max|Tags:rotating_light] <message for alarm on> http://%VAR3%
   ENDON
 ```
 ```
 RULE2
-  ON Power1#State=OFF DO
-    BACKLOG VAR1 ALARM_OFF; WebQuery http://ntfy.sh/<topic> POST [Title: <title for alarm off>] <message for alarm off> http://%VAR2%
-  EndOn
-  ON Power1#State=ON DO
-   BACKLOG VAR1 ALARM_ON; WebQuery http://ntfy.sh/<topic> POST [Title: <title for alarm on|Priority:max|Tags:rotating_light] <message for alarm on> http://%VAR2%
+  ON System#Init DO
+   BACKLOG VAR1 ALARM_OFF ; VAR2 0
+  ENDON
+  ON System#Boot DO
+   BACKLOG IpAddress
+  ENDON
+  ON IpAddress1 DO
+    BACKLOG VAR2 1 ; VAR3 %value% ENDON
   ENDON
   ON StatusNET#IPAddress DO
-   VAR2 %value%
+   VAR3 %value%
   ENDON
 ```
+
 This example includes a notification via the free notification service ntfy.sh.
 
 Activate with 
