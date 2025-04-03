@@ -283,8 +283,31 @@ Example with ```A0``` configured as ```ADC Input```, ```D1/GPIO5``` configured a
 ```
 MEM1 500
 ```
+Ntfy topic:
+```
+MEM2 <MyTopic>
+```
+Alarm "ON" title:
+```
+MEM3 <MyAlarmOnTitle>
+```
+Alarm "Off" title:
+```
+MEM4 <MyAlarmOffTitle>
+```
+Alarm "ON" message:
+```
+MEM5 <MyAlarmOnMessage>
+```
+Alarm "Off" message:
+```
+MEM6 <MyAlarmOffMessage>
+```
 ```
 VAR1 ALARM_OFF
+```
+```
+VAR2 unknown
 ```
 ```
 RULE1
@@ -297,10 +320,10 @@ RULE1
 ```
 RULE2
   ON Power1#State=0 DO
-    BACKLOG VAR1 ALARM_OFF; WebQuery http://ntfy.sh/<topic> POST [Title: <title for alarm off>] <message for alarm off> http://%VAR2%
+    BACKLOG VAR1 ALARM_OFF; WebQuery http://ntfy.sh/%MEM2% POST [Title: %MEM4%] %MEM6% http://%VAR2%
   EndOn
   ON Power1#State=1 DO
-   BACKLOG VAR1 ALARM_ON; WebQuery http://ntfy.sh/<topic> POST [Title: <title for alarm on|Priority:max|Tags:rotating_light] <message for alarm on> http://%VAR2%
+   BACKLOG VAR1 ALARM_ON; WebQuery http://ntfy.sh/%MEM2% POST [Title: %MEM3%|Priority:max|Tags:rotating_light] %MEM5% http://%VAR2%
   ENDON
   ON StatusNET#IPAddress DO
    VAR2 %value%
@@ -553,7 +576,7 @@ MEM2 http://<YourSonnenBatteryIP>:80/api/v2
 # charging limit in W
 MEM3 4600
 # Ntfy topic
-MEM4 <YourTopic>
+MEM4 <MyTopic>
 
 RULE1
   ON Clock#Timer=1 DO
