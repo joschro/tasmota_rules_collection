@@ -615,7 +615,8 @@ RULE3
       DS18Alias 9F00000085D75B28,Rücklauf_Brenn;
       DS18Alias A800000085D8DD28,Laden_WaWa;
       DS18Alias 91000000860BD528,Vorlauf_Brenn;
-      DS18Alias 69000000860BDE28,Laden_Heiz
+      DS18Alias 69000000860BDE28,Laden_Heiz;
+      DS18Alias AA00000086A35128,Speicher
     ENDON
 ```
 ```
