@@ -425,21 +425,44 @@ Pulse counter
 Example use case is an analog water counter that short cuts two wires at every 1/1000 m³ (1l).
 Counter2 is the counted amout in m³.
 ```
-Rule1
-  On Counter#C1=1000 Do
+RULE1
+  ON Counter#C1=1000 DO
     Counter2 +1
-  EndOn
-  On Counter#C1>=1000 do
+  ENDON
+  ON Counter#C1>=1000 DO
     Counter1 0
-  EndOn
+  ENDON
 ```
 ```
-rule1 1
+RULE1 1
 ```
 
 To make sure one short cut is ony counted once, you need to set the ```CounterDebounce``` variable to a reasonable value (in milliseconds):
 ```
 CounterDebounce 500
+```
+
+To publish the full count in l (Counter1 + Counter2), you can add the following rules:
+```
+BACKLOG MEM1 0; Var1 0
+```
+```
+RULE2
+  ON Counter#C1>%Var1% DO
+    BACKLOG Var1 %value% ; Var2=%value%/1000+%Mem1%
+  ENDON
+  ON Counter#C2>%Mem1% DO
+    Mem1 %value%
+  ENDON
+```
+```
+RULE3
+  ON Counter#C1>%Var1% DO
+    Publish tele/<topic>/Counter %Var2%
+  ENDON
+```
+```
+BACKLOG RULE2 1; RULE3 1
 ```
 
 Distance / water level measurement
