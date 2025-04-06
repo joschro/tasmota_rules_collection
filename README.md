@@ -77,7 +77,7 @@ RULE1
     IF %VAR1%=ON
       Power1 ON
     ELSE
-      RuleTimer1 %MEM1%
+      RuleTimer2 %MEM1%
     ENDIF
   ENDON
   ON System#Boot DO
@@ -91,22 +91,22 @@ To define times when activated/deactivated, you can use timers; under "Configura
 ```
 RULE2
   ON Clock#Timer=1 DO
-    BACKLOG VAR1 ON; Power1 2
+    VAR1 ON
   ENDON
   ON Clock#Timer=2 DO
-    BACKLOG VAR1 OFF; Power1 2
+    VAR1 OFF
   ENDON
   ON Clock#Timer=3 DO
-    BACKLOG VAR1 ON; Power1 2
+    VAR1 ON
   ENDON
   ON Clock#Timer=4 DO
-    BACKLOG VAR1 OFF; Power1 2
+    VAR1 OFF
   ENDON
   ON Clock#Timer=5 DO
-    BACKLOG VAR1 ON; Power1 2
+    VAR1 ON
   ENDON
   ON Clock#Timer=6 DO
-    BACKLOG VAR1 OFF; Power1 2
+    VAR1 OFF
   ENDON
 ```
 Activate with
