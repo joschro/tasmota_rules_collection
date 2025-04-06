@@ -43,43 +43,76 @@ once in the console.
 Flip-Flop
 =========
 Turn on for ```Mem1``` seconds, turn off again for ```Mem2``` seconds and repeat that indefinitively.
+
 Use case examples:
-* Warm water circulation, turning on for 4 minutes and turning off for 20 miutes
+
+Warm water circulation
+----------------------
+* Turning on for 4 minutes and turning off for 20 miutes
 ```
-Mem1 240
-Mem2 1200
+MEM1 240
+MEM2 1200
 ```
 * Toggle every half hour
 ```
-Mem1 1800
-Mem2 1800
+MEM1 1800
+MEM2 1800
 ```
 Copy and paste into the Tasmota console:
 ```
-Mem1 240
+BACKLOG MEM1 240; MEM2 1200
 ```
 ```
-Mem2 1200
-```
-```
-Rule1
-  On Power1#state=1 Do 
-    Backlog Power1 %value%; RuleTimer1 %Mem1%
-  Endon 
-  On Rules#Timer=1 Do
+RULE1
+  ON Power1#State=1 DO
+    BACKLOG Power1 %value%; RuleTimer1 %MEM1%
+  ENDON
+  ON Rules#Timer=1 DO
     Power1 OFF
-  EndOn 
-  On Power1#State=0 do 
-    Backlog Power1 %value%; RuleTimer2 %Mem2%
-  EndOn 
-  On Rules#Timer=2 do 
-    Power1 ON
-  Endon
-  On System#Boot Do
-    Power1 2
-  EndOn
+  ENDON
+  ON Power1#State=0 DO
+    BACKLOG Power1 %value%; RuleTimer2 %MEM2%
+  ENDON
+  ON Rules#Timer=2 DO
+    IF %VAR1%=ON
+      Power1 ON
+    ELSE
+      RuleTimer1 %MEM1%
+    ENDIF
+  ENDON
+  ON System#Boot DO
+    BACKLOG VAR1 ON; Power1 2
+  ENDON
 ```
-Activate rule with ```Rule1 1``` in the console. Using the variable of type ```Mem``` ensures they survive a reboot of the device. To change the timing, just re-enter ```Mem1 <x>``` and ```Mem2 <y>``` and restart the device.
+Activate rule with ```RULE1 1``` in the console. Using the variable of type ```MEM``` ensures they survive a reboot of the device. To change the timing, just re-enter ```MEM1 <x>``` and ```MEM2 <y>``` and restart the device.
+
+To define times when activated/deactivated, you can use timers; under "Configuration" -> "Timer" check "Enable Timers" and define times when to activate and when to deactivate the flip-flop. Timer 1 defines the time of activation, timer 2 the time of deactivation; timer 3 and timer 4, timer 5 and 6 respectively.
+
+```
+RULE2
+  ON Clock#Timer=1 DO
+    BACKLOG VAR1 ON; Power1 2
+  ENDON
+  ON Clock#Timer=2 DO
+    BACKLOG VAR1 OFF; Power1 2
+  ENDON
+  ON Clock#Timer=3 DO
+    BACKLOG VAR1 ON; Power1 2
+  ENDON
+  ON Clock#Timer=4 DO
+    BACKLOG VAR1 OFF; Power1 2
+  ENDON
+  ON Clock#Timer=5 DO
+    BACKLOG VAR1 ON; Power1 2
+  ENDON
+  ON Clock#Timer=6 DO
+    BACKLOG VAR1 OFF; Power1 2
+  ENDON
+```
+Activate with
+```
+RULE2 1
+```
 
 Coffee mill
 -----------
