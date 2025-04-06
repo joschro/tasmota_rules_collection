@@ -74,7 +74,7 @@ RULE1
     BACKLOG Power1 %value%; RuleTimer2 %MEM2%
   ENDON
   ON Rules#Timer=2 DO
-    IF %VAR1%=ON
+    IF (%VAR1%=ON)
       Power1 ON
     ELSE
       RuleTimer2 %MEM1%
