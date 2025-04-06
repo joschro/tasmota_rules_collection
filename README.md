@@ -63,13 +63,13 @@ Mem2 1200
 ```
 ```
 Rule1
-  On Power1#state=ON Do 
+  On Power1#state=1 Do 
     Backlog Power1 %value%; RuleTimer1 %Mem1%
   Endon 
   On Rules#Timer=1 Do
     Power1 OFF
   EndOn 
-  On Power1#State=OFF do 
+  On Power1#State=0 do 
     Backlog Power1 %value%; RuleTimer2 %Mem2%
   EndOn 
   On Rules#Timer=2 do 
@@ -615,10 +615,10 @@ WebButton1 Charging On/Off
 ```
 ```
 RULE2
-  ON Power1#State=ON DO
+  ON Power1#State=1 DO
     BACKLOG WebQuery %MEM2%/configurations PUT [%MEM1%] EM_OperatingMode=1 ; WebQuery %MEM2%/setpoint/charge/%MEM3% POST [%MEM1%] ; WebQuery http://ntfy.sh/%MEM4% POST [Title: SonnenBattery state changed] SonnenBattery now charging with %MEM3%W
   EndOn
-  ON Power1#State=OFF DO
+  ON Power1#State=0 DO
    BACKLOG WebQuery %MEM2%/configurations PUT [%MEM1%] EM_OperatingMode=2 ; WebQuery http://ntfy.sh/%MEM4% POST [Title: SonnenBattery state changed] SonnenBattery now in auto mode
   ENDON
   ```
