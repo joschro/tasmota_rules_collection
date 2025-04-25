@@ -15,9 +15,11 @@ on a Linux system in this case. Make sure to hold the reset button pressed while
 
 Now go into "Settings" in the Wemos D1 Mini webinterface and select "Device Settings"; change device type to "Generic(18)". You are now ready to start playing with your new IoT device.
 
-Additional tools
-----------------
+Additional tools & information
+------------------------------
 To handle more than one Tasmota device with one central webinterface, you may want to give [TasmoAdmin](https://github.com/TasmoAdmin/TasmoAdmin) a try.
+
+Information on retained message options can be found [here](https://tasmota.github.io/docs/MQTT/#retained-mqtt-messages).
 
 Timer
 =====
