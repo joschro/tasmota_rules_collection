@@ -465,7 +465,7 @@ RULE1
     Counter2 +1
   ENDON
   ON Counter#C1>=1000 DO
-    Counter1 0
+    BACKLOG Counter1 0; Var1 0
   ENDON
 ```
 ```
@@ -479,7 +479,7 @@ CounterDebounce 500
 
 To publish the full count in l (Counter1 + Counter2), you can add the following rules:
 ```
-BACKLOG MEM1 0; Var1 0
+BACKLOG MEM1 0; MEM2 360; Var1 0; Var3 0
 ```
 ```
 RULE2
@@ -489,11 +489,20 @@ RULE2
   ON Counter#C2>%Mem1% DO
     Mem1 %value%
   ENDON
+  ON Rules#Timer=1 DO
+    BACKLOG Var4=1000*(%Var2%-%Var3%)/(%MEM2%/3600); RuleTimer1 %MEM2%
+  ENDON
+  ON Rules#Timer=1 DO
+    BACKLOG Var3=%Var2%; Publish tele/<topic>/FlowRate %Var4%
+  ENDON
 ```
 ```
 RULE3
   ON Counter#C1>%Var1% DO
     Publish tele/<topic>/Counter %Var2%
+  ENDON
+  ON System#Boot do
+    RuleTimer1 %MEM2%
   ENDON
 ```
 ```
