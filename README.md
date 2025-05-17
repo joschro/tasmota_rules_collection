@@ -465,7 +465,7 @@ RULE1
     Counter2 +1
   ENDON
   ON Counter#C1>=1000 DO
-    BACKLOG Counter1 0; Var1 0
+    BACKLOG Var1 0; Counter1 0
   ENDON
 ```
 ```
@@ -484,7 +484,7 @@ BACKLOG MEM1 0; MEM2 360; Var1 0; Var3 0
 ```
 RULE2
   ON Counter#C1>%Var1% DO
-    BACKLOG Var1 %value% ; Var2=%value%/1000+%Mem1%
+    IF (%value%<1000) Var1 %value% ; Var2=%value%/1000+%Mem1% ENDIF
   ENDON
   ON Counter#C2>%Mem1% DO
     Mem1 %value%
@@ -502,7 +502,7 @@ RULE3
     Publish tele/<topic>/Counter %Var2%
   ENDON
   ON System#Boot do
-    RuleTimer1 %MEM2%
+    BACKLOG RuleTimer1 %MEM2%; Var1 0; Var3 0
   ENDON
 ```
 ```
