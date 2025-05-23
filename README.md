@@ -781,3 +781,28 @@ It can be controlled with e.g.
 ```
 ShutterPosition 50
 ```
+
+Light controlled via DALI protocol
+----------------------------------
+See https://tasmota.github.io/docs/DALI/#shelly-dali-dimmer-gen3 and https://us.shelly.com/blogs/documentation/shelly-dali-dimmer-gen3 .
+
+* Flash Shelly DALI Dimmer with latest tasmota32c3.bin
+* Enable DALI
+```
+DaliLight 1
+```
+```
+Backlog AdcGpio1 10000,10000,4000; ButtonTopic 0; SetOption1 1; SetOption11 0; SetOption32 20; DimmerStep 5; LedTable 0
+```
+* Create rules
+```
+RULE1
+  ON Button1#State=2 DO dimmer + ENDON ON Button2#State=2 DO dimmer - ENDON ON Button1#State=3 DO power 2 ENDON ON Button2#State=3 DO power 2 ENDON
+```
+```
+RULE2
+  ON System#Boot DO DaliPower On  ENDON
+```
+```
+BACKLOG RULE1 1; RULE2 1
+```
