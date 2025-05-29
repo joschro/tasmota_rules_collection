@@ -700,7 +700,7 @@ RULE3
       DS18Alias 210000006B6DC328,WarmWasser;
       DS18Alias F30000006ABC4C28,Zirkulation;
       DS18Alias BE0000008321D028,Vorlauf_Solar;
-      DS18Alias 940000006B669628,Rücklauf_Solar;
+      DS18Alias F900000086B6F928,Rücklauf_Solar;
       DS18Alias A8000801CA1EF010,Heizungsraum;
       DS18Alias 9F00000085D75B28,Rücklauf_Brenn;
       DS18Alias A800000085D8DD28,Laden_WaWa;
