@@ -823,7 +823,7 @@ BACKLOG RULE1 1; RULE2 1
 wbec-control - Add timer functionality to free wbec version
 -----------------------------------------------------------
 
-```CalcRes```                 # Prevent decimals to be shown in variable calculation
+```CalcRes 0```                 # Prevent decimals to be shown in variable calculation
 
 ```MEM1 192.168.178.102```    # IP address of wbec
 
