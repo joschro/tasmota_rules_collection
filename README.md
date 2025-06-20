@@ -402,23 +402,29 @@ After a reboot, the device should display the temperatur information.
 
 Next step is to create a rule that fires an alarm when the temperature is above or below a certain threshold. We basically use the same code as in the above alarm device example:
 
+Variables used:
+* ```VAR1``` indicates current status: ALARM_ON / ALARM_OFF
+* ```VAR2``` 1 if connected to network
+* ```VAR3``` is the device's IP address
+* ```VAR4``` temperature when alarm is activated
+
 Temperature threshold:
 ```
-BACKLOG MEM1 -12 ; MEM2 <ntfyTopic>
+BACKLOG MEM1 -10 ; MEM2 <ntfyTopic>
 ```
 
 ```
 RULE1
   ON DS18S20#Temperature>%MEM1% DO
     IF ((%VAR1%=ALARM_OFF) AND (%VAR2%=1))
-      Power1 ON
+      BACKLOG VAR4 %value%; Power1 ON
     ENDIF
   ENDON
   ON Power1#State=0 DO
     BACKLOG VAR1 ALARM_OFF; WebQuery http://ntfy.sh/%MEM2% POST [Title: <title for alarm off>] <message for alarm off> http://%VAR3%
   ENDON
   ON Power1#State=1 DO
-   BACKLOG VAR1 ALARM_ON; WebQuery http://ntfy.sh/%MEM2% POST [Title: <title for alarm on|Priority:max|Tags:rotating_light] <message for alarm on> http://%VAR3%
+   BACKLOG VAR1 ALARM_ON; WebQuery http://ntfy.sh/%MEM2% POST [Title: <title for alarm on|Priority:max|Tags:rotating_light] %VAR4%°C - <message for alarm on> http://%VAR3%
   ENDON
 ```
 ```
