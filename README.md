@@ -416,7 +416,7 @@ BACKLOG MEM1 -10 ; MEM2 <ntfyTopic>
 ```
 RULE1
   ON DS18S20#Temperature>%MEM1% DO
-    IF ((%VAR1%=ALARM_OFF) AND (%VAR2%=1))
+    IF ((%VAR1%=ALARM_OFF) AND (%VAR2%=1) AND (%value%!=85))
       BACKLOG VAR4 %value%; Power1 ON
     ENDIF
   ENDON
