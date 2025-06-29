@@ -35,6 +35,12 @@ Backlog0 Timezone 99; TimeStd 0,0,10,1,3,60; TimeDst 0,0,3,1,2,120
 ```
 for Germany (DE).
 
+To display the current time in the web ui, enter
+```
+WebTime 11,19
+```
+in the console (https://tasmota.github.io/docs/Commands/#webtime).
+
 For inverted operation, i.e. switched off by any trigger and toggled on after a specific time, specify
 ```
 PowerOnState 5
