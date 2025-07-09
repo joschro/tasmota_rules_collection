@@ -21,6 +21,8 @@ To handle more than one Tasmota device with one central webinterface, you may wa
 
 Information on retained message options can be found [here](https://tasmota.github.io/docs/MQTT/#retained-mqtt-messages).
 
+Current sensor readings as JSON from web API: ```http://<ip>/cm?cmnd=Status%2010```
+
 Timer
 =====
 To toggle a relay or light off after a specific time being switched on, use PulseTime:
