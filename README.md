@@ -774,10 +774,11 @@ Useful links:
 * https://www.smarthomejetzt.de/gaszaehler-mit-wemos-d1-mini-mit-reed-kontakt-pullup-widerstand-und-tasmota-smart-machen/
 * https://homeitems.de/gas-und-wasserzaehler-mit-tasmota-digitalisieren/
 
-Shutter automation with Shelly Plus 2PM
----------------------------------------
+Shutter automation with Shelly Plus 2PM Gen3
+--------------------------------------------
 Setup: https://github.com/arendst/Tasmota/discussions/22526
-* Configure -> Other -> Template: ```{"NAME":"Shelly 2PM Gen3","GPIO":[9472,3458,576,225,4736,224,640,608,1,1,193,0,0,0,0,0,0,0,192,32,1,1],"FLAG":0,"BASE":1}```
+* Configure -> Other -> Template:
+  ```{"NAME":"Shelly 2PM Gen3","GPIO":[9472,3458,576,225,4736,224,640,608,1,1,193,0,0,0,0,0,0,0,192,32,1,1],"FLAG":0,"BASE":1}```
 * Console: ```ADCGPIO4 10000,10000,4000```
 
 From https://tasmota.github.io/docs/Blinds-and-Shutters/#autosetup-only-shelly-plus-2pm-esp32-based
