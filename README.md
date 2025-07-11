@@ -788,8 +788,10 @@ From https://tasmota.github.io/docs/Blinds-and-Shutters/#autosetup-only-shelly-p
 
 Setup Shelly to act as a shutter control:
 ```
-Backlog SetOption80 1 ; Shuttermode 1
+Backlog SetOption80 1 ; Shuttermode 1; Interlock 1,2 ; Interlock on
 ```
+and restart the device.
+
 If shutter is completely open, you can force it to close:
 ```
 Backlog Shuttersetopen ; Shutterclose
