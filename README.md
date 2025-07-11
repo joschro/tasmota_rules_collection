@@ -859,7 +859,7 @@ wbec-control - Add timer functionality to free wbec version
 
 ```MEM5 16```                 # max charging when PV only
 
-```MEM6 Wasserstr56Info```                 # NTFY.sh topic
+```MEM6 <topic>```                 # NTFY.sh topic
 
 ```
 RULE1
