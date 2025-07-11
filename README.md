@@ -23,6 +23,14 @@ Information on retained message options can be found [here](https://tasmota.gith
 
 Current sensor readings as JSON from web API: ```http://<ip>/cm?cmnd=Status%2010```
 
+Check various settings:
+```
+backlog InfoRetain; PowerRetain; SensorRetain; StateRetain; StatusRetain; SwitchRetain; PulseTime; PowerOnState; Timezone; SetOption0; SetOption1; SetOption11; SetOption15; SetOption31; SetOption32; SetOption74; SetOption80
+```
+Default values:
+* https://tasmota.github.io/docs/PowerOnState
+* https://tasmota.github.io/docs/Commands/#setoptions
+
 Timer
 =====
 To toggle a relay or light off after a specific time being switched on, use PulseTime:
