@@ -392,7 +392,7 @@ RULE2 1
 
 To set the state correctly when using MQTT, add the following rule:
 ```
-RULE3 ON Power1#state DO Publish stat/<topic>/POWER %value% ENDON
+RULE3 ON Power1#state DO Publish2 stat/<topic>/POWER %value% ENDON
 ```
 ```
 RULE3 1
