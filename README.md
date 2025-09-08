@@ -568,6 +568,11 @@ After the rule has been triggered once, the calibration is done and the rule sho
 BACKLOG RULE1 0; RULE1 ""; RULE2 0; RULE2 ""
 ```
 
+In case A4T was reset, you may need to reconfigure:
+```
+{"NAME":"NOUS A4T","GPIO":[0,2624,0,576,2656,2720,0,0,224,225,32,0,0,0],"FLAG":0,"BASE":18}
+```
+
 In case A5T was reset, you may need to reconfigure the rules for the power buttons:
 
 ```
