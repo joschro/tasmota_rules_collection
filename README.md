@@ -539,7 +539,7 @@ Power-monitoring with Nous A1T, A4T, A5T and A6T power plugs
 ============================================================
 The Nous A1T and A5T come preconfigured with Tasmota, but need calibration; see https://tasmota.github.io/docs/Power-Monitoring-Calibration/ on how to do this.
 
-For easier calibration when using an e.g. 60W bulb, use this workflow to calculate the correct current after voltage and power calibration is done:
+For easier calibration when using an e.g. 60W bulb, use this workflow to set the correct current automatically after voltage and power calibration is done:
 ```
 Backlog VoltRes 2; WattRes  2
 ```
@@ -550,16 +550,22 @@ PowerSet <power>
 VoltageSet <voltage>
 ```
 ```
-Rule1
- ON tele-ENERGY#Voltage DO Var1 %value% ENDON
- ON tele-ENERGY#Current DO Var2 %value% ENDON
- ON tele-ENERGY#Power   DO Var3 %value% ENDON
+RULE1
+ ON tele-ENERGY#Power   DO Var1 %value% ENDON
+ ON tele-ENERGY#Voltage DO Var2 %value% ENDON
+ ON tele-ENERGY#Current DO BACKLOG Var3 %value%; Var4=1000.0 * Var1 / Var2 ENDON
 ```
 ```
-Rule1 1
+RULE2
+ ON tele-ENERGY#Current DO CurrentSet Var4 ENDON
 ```
 ```
-Backlog Var4=1000.0 * Var3 / Var1; CurrentSet Var4
+BACKLOG RULE1 1; RULE2 1
+```
+
+After the rule has been triggered once, the calibration is done and the rule should be deactivated:
+```
+BACKLOG RULE1 0; RULE1 ""; RULE2 0; RULE2 ""
 ```
 
 In case A5T was reset, you may need to reconfigure the rules for the power buttons:
@@ -574,6 +580,11 @@ Rule2 on analog#a0<350 do break ON analog#a0<600 DO Power2 2 ENDON
 Rule2 1
 Rule3 on analog#a0<600 do break ON analog#a0<990 DO Power1 2 ENDON
 Rule3 1
+```
+
+In case A6T was reset, you may need to reconfigure:
+```
+{"NAME":"Nous A6T","GPIO":[1,1,320,1,32,1,1,1,1,224,2624,1,1,1,1,1,0,1,1,1,0,1,2656,2720,0,0,0,0,1,1,1,1,1,0,0,1],"FLAG":0,"BASE":1}
 ```
 
 Simple cronjobs doing web requests (call an URL)
