@@ -535,9 +535,32 @@ Distance / water level measurement
 ==================================
 See https://favoss.de/smarte-wasserstandsanzeige-bauen/
 
-Power-monitoring with Nous A1T and A5T power plugs
-==================================================
+Power-monitoring with Nous A1T, A4T, A5T and A6T power plugs
+============================================================
 The Nous A1T and A5T come preconfigured with Tasmota, but need calibration; see https://tasmota.github.io/docs/Power-Monitoring-Calibration/ on how to do this.
+
+For easier calibration when using an e.g. 60W bulb, use this workflow to calculate the correct current after voltage and power calibration is done:
+```
+Backlog VoltRes 2; WattRes  2
+```
+```
+PowerSet <power>
+```
+```
+VoltageSet <voltage>
+```
+```
+Rule1
+ ON tele-ENERGY#Voltage DO Var1 %value% ENDON
+ ON tele-ENERGY#Current DO Var2 %value% ENDON
+ ON tele-ENERGY#Power   DO Var3 %value% ENDON
+```
+```
+Rule1 1
+```
+```
+Backlog Var4=1000.0 * Var3 / Var1; CurrentSet Var4
+```
 
 In case A5T was reset, you may need to reconfigure the rules for the power buttons:
 
