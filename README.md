@@ -962,6 +962,25 @@ RULE3
     BACKLOG VAR1=MEM4*10; VAR2=MEM5*10
   ENDON
 ```
+
+to ping the target, add to Rule3:
+  on Time#Minute|5 do
+    backlog var1 0;ping4 8.8.8.8;ping4 1.1.1.1;ping4 208.67.222.222; RuleTimer1 60
+  endon
+  on Ping#8.8.8.8#Reachable=true do
+    var1 1
+  endon 
+  on Ping#1.1.1.1#Reachable=true do
+    var1 1
+  endon 
+  on Ping#208.67.222.222#Reachable=true do
+    var1 1 
+  endon 
+  on Rules#Timer=1 do
+    Power %var1% 
+  endon
+
+          
 ```
 BACKLOG RULE1 1; RULE2 1; RULE3 1
 ```
