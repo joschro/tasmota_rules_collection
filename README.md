@@ -963,6 +963,7 @@ RULE3
   ENDON
 ```
 
+```
 to ping the target, add to Rule3:
   on Time#Minute|5 do
     backlog var1 0;ping4 8.8.8.8;ping4 1.1.1.1;ping4 208.67.222.222; RuleTimer1 60
@@ -979,6 +980,7 @@ to ping the target, add to Rule3:
   on Rules#Timer=1 do
     Power %var1% 
   endon
+```
 
           
 ```
