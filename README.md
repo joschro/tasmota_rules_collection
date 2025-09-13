@@ -979,10 +979,10 @@ RULE2
     BACKLOG VAR3 0; ping4 %MEM1%; RuleTimer2 0; RuleTimer1 10
   ENDON
   ON Rules#Timer=1 DO 
-    IF %VAR3%==1 
-      BACKLOG WebQuery http://%MEM1%/json?id=%MEM2%&pvMode=1&currLim=%VAR1% ; WebQuery http://ntfy.sh/%MEM6% POST [Title: Wallbox charging state changed] Wallbox %MEM2% now charging from grid with max %MEM4%A ; Publish stat/wbec_ctrl/POWER1 1
+    IF (%VAR3%==1)
+      WebQuery http://%MEM1%/json?id=%MEM2%&pvMode=1&currLim=%VAR1% ; WebQuery http://ntfy.sh/%MEM6% POST [Title: Wallbox charging state changed] Wallbox %MEM2% now charging from grid with max %MEM4%A ; Publish stat/wbec_ctrl/POWER1 1
     ELSE 
-      BACKLOG ping4 %MEM1%; RuleTimer1 10
+      ping4 %MEM1%; RuleTimer1 10
     ENDIF
   ENDON
 
@@ -990,10 +990,10 @@ RULE2
     BACKLOG VAR3 0; ping4 %MEM1%; RuleTimer1 0; RuleTimer2 10
   ENDON
   ON Rules#Timer=2 DO 
-    IF %VAR3%==1 
-      BACKLOG WebQuery http://%MEM1%/json?id=%MEM2%&pvMode=2&currLim=%VAR2% ; WebQuery http://ntfy.sh/%MEM6% POST [Title: Wallbox charging state changed] Wallbox %MEM2% now charging PV only with max %MEM5%A ; Publish stat/wbec_ctrl/POWER1 0
+    IF (%VAR3%==1)
+      WebQuery http://%MEM1%/json?id=%MEM2%&pvMode=2&currLim=%VAR2% ; WebQuery http://ntfy.sh/%MEM6% POST [Title: Wallbox charging state changed] Wallbox %MEM2% now charging PV only with max %MEM5%A ; Publish stat/wbec_ctrl/POWER1 0
     ELSE 
-      BACKLOG ping4 %MEM1%; RuleTimer2 10
+      ping4 %MEM1%; RuleTimer2 10
     ENDIF
   ENDON
 ```
@@ -1004,10 +1004,10 @@ RULE3
     BACKLOG VAR4 0; ping4 %MEM1%; RuleTimer4 0; RuleTimer3 10
   ENDON
   ON Rules#Timer=3 DO 
-    IF %VAR4%==1 
-      BACKLOG WebQuery http://%MEM1%/json?id=%MEM3%&pvMode=1&currLim=%VAR1% ; WebQuery http://ntfy.sh/%MEM6% POST [Title: Wallbox charging state changed] Wallbox %MEM3% now charging from grid with max %MEM4%A (%VAR1%) ; Publish stat/wbec_ctrl/POWER2 1
+    IF (%VAR4%==1)
+      WebQuery http://%MEM1%/json?id=%MEM3%&pvMode=1&currLim=%VAR1% ; WebQuery http://ntfy.sh/%MEM6% POST [Title: Wallbox charging state changed] Wallbox %MEM3% now charging from grid with max %MEM4%A (%VAR1%) ; Publish stat/wbec_ctrl/POWER2 1
     ELSE 
-      BACKLOG ping4 %MEM1%; RuleTimer3 10
+      ping4 %MEM1%; RuleTimer3 10
     ENDIF
   ENDON
 
@@ -1015,10 +1015,10 @@ RULE3
     BACKLOG VAR4 0; ping4 %MEM1%; RuleTimer3 0; RuleTimer4 10
   ENDON
   ON Rules#Timer=4 DO 
-    IF %VAR4%==1 
-      BACKLOG WebQuery http://%MEM1%/json?id=%MEM3%&pvMode=2&currLim=%VAR2% ; WebQuery http://ntfy.sh/%MEM6% POST [Title: Wallbox charging state changed] Wallbox %MEM3% now charging PV only with max %MEM5%A (%VAR2%); Publish stat/wbec_ctrl/POWER2 0
+    IF (%VAR4%==1)
+      WebQuery http://%MEM1%/json?id=%MEM3%&pvMode=2&currLim=%VAR2% ; WebQuery http://ntfy.sh/%MEM6% POST [Title: Wallbox charging state changed] Wallbox %MEM3% now charging PV only with max %MEM5%A (%VAR2%); Publish stat/wbec_ctrl/POWER2 0
     ELSE 
-      BACKLOG ping4 %MEM1%; RuleTimer4 10
+      ping4 %MEM1%; RuleTimer4 10
     ENDIF
   ENDON
 ```
