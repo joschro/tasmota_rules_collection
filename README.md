@@ -931,33 +931,50 @@ wbec-control - Add timer functionality to free wbec version
 
 ```
 RULE1
+
   ON Clock#Timer=1 DO
     Power1 1
   ENDON
+
   ON Clock#Timer=2 DO
     Power1 0
   ENDON
+
   ON Clock#Timer=3 DO
     Power1 1
   ENDON
+
   ON Clock#Timer=4 DO
     Power1 0
   ENDON
+
   ON Clock#Timer=5 DO
     Power2 1
   ENDON
+
   ON Clock#Timer=6 DO
     Power2 0
   ENDON
+
   ON Clock#Timer=7 DO
     Power2 1
   ENDON
+
   ON Clock#Timer=8 DO
     Power2 0
+  ENDON
+
+  ON System#Boot DO
+    BACKLOG VAR1=MEM4*10; VAR2=MEM5*10; VAR3 0
+  ENDON
+
+  ON Ping#%MEM1%#Reachable=true DO
+    BACKLOG VAR3 1 ; VAR4 1
   ENDON
 ```
 ```
 RULE2
+
   ON Power1#State=1 DO
     BACKLOG VAR3 0; ping4 %MEM1%; RuleTimer2 0; RuleTimer1 10
   ENDON
@@ -979,6 +996,9 @@ RULE2
       BACKLOG ping4 %MEM1%; RuleTimer2 10
     ENDIF
   ENDON
+```
+```
+RULE3
 
   ON Power2#State=1 DO
     BACKLOG VAR4 0; ping4 %MEM1%; RuleTimer4 0; RuleTimer3 10
@@ -1000,15 +1020,6 @@ RULE2
     ELSE 
       BACKLOG ping4 %MEM1%; RuleTimer4 10
     ENDIF
-  ENDON
-  ON Ping#%MEM1%#Reachable=true DO
-    BACKLOG VAR3 1 ; VAR4 1
-  ENDON
-```
-```
-RULE3
-  ON System#Boot DO
-    BACKLOG VAR1=MEM4*10; VAR2=MEM5*10; VAR3 0
   ENDON
 ```
           
