@@ -398,6 +398,27 @@ RULE3 ON Power1#state DO Publish2 stat/<topic>/POWER %value% ENDON
 RULE3 1
 ```
 
+Test if internet is reachable
+=============================
+```
+RULE1
+  ON Time#Minute|5 DO
+    BACKLOG var1 0; ping4 8.8.8.8; ping4 1.1.1.1; ping4 208.67.222.222; RuleTimer1 60
+  ENDON
+  ON Ping#8.8.8.8#Reachable=true DO
+    Var1 1
+  ENDON
+  ON Ping#1.1.1.1#Reachable=true DO
+    Var1 1
+  ENDON
+  ON Ping#208.67.222.222#Reachable=true DO
+    Var1 1 
+  ENDON
+  ON Rules#Timer=1 DO
+    Power %var1% 
+  ENDON
+```
+
 Temperature guard / Temperaturwächter
 =====================================
 Using parasite mode, it is very easy to build a simple DS18x20 (DS1820, DS18B20, DS18S20 etc.) temperature sensor based temperature guard with only 2 wires.
@@ -938,50 +959,58 @@ RULE1
 ```
 RULE2
   ON Power1#State=1 DO
-    BACKLOG WebQuery http://%MEM1%/json?id=%MEM2%&pvMode=1&currLim=%VAR1% ; WebQuery http://ntfy.sh/%MEM6% POST [Title: Wallbox charging state changed] Wallbox %MEM2% now charging from grid with max %MEM4%A
+    BACKLOG VAR3 0; ping4 %MEM1%; RuleTimer2 0; RuleTimer1 10
   ENDON
+  ON Rules#Timer=1 DO 
+    IF %VAR3%==1 
+      BACKLOG WebQuery http://%MEM1%/json?id=%MEM2%&pvMode=1&currLim=%VAR1% ; WebQuery http://ntfy.sh/%MEM6% POST [Title: Wallbox charging state changed] Wallbox %MEM2% now charging from grid with max %MEM4%A ; Publish stat/wbec_ctrl/POWER1 1
+    ELSE 
+      BACKLOG ping4 %MEM1%; RuleTimer1 10
+    ENDIF
+  ENDON
+
   ON Power1#State=0 DO
-    BACKLOG WebQuery http://%MEM1%/json?id=%MEM2%&pvMode=2&currLim=%VAR2% ; WebQuery http://ntfy.sh/%MEM6% POST [Title: Wallbox charging state changed] Wallbox %MEM2% now charging PV only with max %MEM5%A
+    BACKLOG VAR3 0; ping4 %MEM1%; RuleTimer1 0; RuleTimer2 10
   ENDON
+  ON Rules#Timer=2 DO 
+    IF %VAR3%==1 
+      BACKLOG WebQuery http://%MEM1%/json?id=%MEM2%&pvMode=2&currLim=%VAR2% ; WebQuery http://ntfy.sh/%MEM6% POST [Title: Wallbox charging state changed] Wallbox %MEM2% now charging PV only with max %MEM5%A ; Publish stat/wbec_ctrl/POWER1 0
+    ELSE 
+      BACKLOG ping4 %MEM1%; RuleTimer2 10
+    ENDIF
+  ENDON
+
   ON Power2#State=1 DO
-    BACKLOG WebQuery http://%MEM1%/json?id=%MEM3%&pvMode=1&currLim=%VAR1% ; WebQuery http://ntfy.sh/%MEM6% POST [Title: Wallbox charging state changed] Wallbox %MEM3% now charging from grid with max %MEM4%A
+    BACKLOG VAR4 0; ping4 %MEM1%; RuleTimer4 0; RuleTimer3 10
   ENDON
+  ON Rules#Timer=3 DO 
+    IF %VAR4%==1 
+      BACKLOG WebQuery http://%MEM1%/json?id=%MEM3%&pvMode=1&currLim=%VAR1% ; WebQuery http://ntfy.sh/%MEM6% POST [Title: Wallbox charging state changed] Wallbox %MEM3% now charging from grid with max %MEM4%A (%VAR1%) ; Publish stat/wbec_ctrl/POWER2 1
+    ELSE 
+      BACKLOG ping4 %MEM1%; RuleTimer3 10
+    ENDIF
+  ENDON
+
   ON Power2#State=0 DO
-    BACKLOG WebQuery http://%MEM1%/json?id=%MEM3%&pvMode=2&currLim=%VAR2% ; WebQuery http://ntfy.sh/%MEM6% POST [Title: Wallbox charging state changed] Wallbox %MEM3% now charging PV only with max %MEM5%A
+    BACKLOG VAR4 0; ping4 %MEM1%; RuleTimer3 0; RuleTimer4 10
+  ENDON
+  ON Rules#Timer=4 DO 
+    IF %VAR4%==1 
+      BACKLOG WebQuery http://%MEM1%/json?id=%MEM3%&pvMode=2&currLim=%VAR2% ; WebQuery http://ntfy.sh/%MEM6% POST [Title: Wallbox charging state changed] Wallbox %MEM3% now charging PV only with max %MEM5%A (%VAR2%); Publish stat/wbec_ctrl/POWER2 0
+    ELSE 
+      BACKLOG ping4 %MEM1%; RuleTimer4 10
+    ENDIF
+  ENDON
+  ON Ping#%MEM1%#Reachable=true DO
+    BACKLOG VAR3 1 ; VAR4 1
   ENDON
 ```
 ```
 RULE3
-  ON Power1#State DO
-    Publish stat/wbec_ctrl/POWER1 %value%
-  ENDON
-  ON Power2#State DO
-    Publish stat/wbec_ctrl/POWER2 %value%
-  ENDON
   ON System#Boot DO
-    BACKLOG VAR1=MEM4*10; VAR2=MEM5*10
+    BACKLOG VAR1=MEM4*10; VAR2=MEM5*10; VAR3 0
   ENDON
 ```
-
-```
-to ping the target, add to Rule3:
-  on Time#Minute|5 do
-    backlog var1 0;ping4 8.8.8.8;ping4 1.1.1.1;ping4 208.67.222.222; RuleTimer1 60
-  endon
-  on Ping#8.8.8.8#Reachable=true do
-    var1 1
-  endon 
-  on Ping#1.1.1.1#Reachable=true do
-    var1 1
-  endon 
-  on Ping#208.67.222.222#Reachable=true do
-    var1 1 
-  endon 
-  on Rules#Timer=1 do
-    Power %var1% 
-  endon
-```
-
           
 ```
 BACKLOG RULE1 1; RULE2 1; RULE3 1
