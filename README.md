@@ -968,7 +968,7 @@ RULE1
     BACKLOG VAR1=MEM4*10; VAR2=MEM5*10; VAR3 0
   ENDON
 
-  ON Ping#%MEM1%#Reachable=true DO
+  ON Ping#%MEM1%#Success>0 DO
     BACKLOG VAR3 1 ; VAR4 1
   ENDON
 ```
