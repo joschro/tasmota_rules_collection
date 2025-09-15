@@ -968,7 +968,7 @@ RULE1
     BACKLOG VAR1=MEM4*10; VAR2=MEM5*10; VAR3 0
   ENDON
 
-  ON Ping#%MEM1%#Success>0 DO
+  ON Ping#<ip-address-from-MEM1>#Success>0 DO    # we can't use %MEM1% here, use the IP address directly instead
     BACKLOG VAR3 1 ; VAR4 1
   ENDON
 ```
