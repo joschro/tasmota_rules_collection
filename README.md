@@ -844,6 +844,14 @@ Useful links:
 * https://www.smarthomejetzt.de/gaszaehler-mit-wemos-d1-mini-mit-reed-kontakt-pullup-widerstand-und-tasmota-smart-machen/
 * https://homeitems.de/gas-und-wasserzaehler-mit-tasmota-digitalisieren/
 
+Battery voltage monitor 9-28V with Shelly Plus Uni
+--------------------------------------------------
+
+* Flashing Tasmota: https://github.com/tasmota/mgos32-to-tasmota32 (v13.4.1 release from 1.3.3 firmware!)
+* "ADC Range" "2" instead of "ADC Input" on GPIO 36 in "Configuration" -> "Template": https://github.com/arendst/Tasmota/discussions/23721
+* ```AdcGpio36 0,1434,0,12760``` measuring Millivolt (original seeting: ```AdcGpio36 0,4095,5,0```; reading raw value: ```AdcGpio36 0,4095,0,4095```)
+  * use "Tools" -> "GPIO Viewer" to see raw value
+
 Shutter automation with Shelly Plus 2PM Gen3
 --------------------------------------------
 Setup: https://github.com/arendst/Tasmota/discussions/22526
