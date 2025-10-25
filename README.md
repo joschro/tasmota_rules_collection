@@ -854,7 +854,7 @@ Battery voltage monitor 9-28V with Shelly Plus Uni
   * ```VoltRes 2```
   * go back to the main menu and note down the value of "ADC1 Voltage" or use "Tools" -> "GPIO Viewer" to see raw value
   * ```AdcGpio36 0,<value>,0,<real volts>``` with "<value>" the value you noted down in the prior step and "<real volts>" the value of your voltmeter, e.g. "12.76"
-  * ```DeepSleepTime 3600``` will put the device into deep sleep mode and wake it up every hour to measure and transmit data; use ```DeepSleepTime 0``` to deaktivate while device is online. See [https://tasmota.github.io/docs/DeepSleep/#deepsleep-modes-regular-time-based](https://tasmota.github.io/docs/DeepSleep/#repeating-regular-deepsleep-based-on-interval) for more information
+* ```DeepSleepTime 3600``` will put the device into deep sleep mode and wake it up every hour to measure and transmit data; use ```DeepSleepTime 0``` to deaktivate while device is online. See [https://tasmota.github.io/docs/DeepSleep/#deepsleep-modes-regular-time-based](https://tasmota.github.io/docs/DeepSleep/#repeating-regular-deepsleep-based-on-interval) for more information
 
 Shutter automation with Shelly Plus 2PM Gen3
 --------------------------------------------
