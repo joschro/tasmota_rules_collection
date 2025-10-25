@@ -848,9 +848,12 @@ Battery voltage monitor 9-28V with Shelly Plus Uni
 --------------------------------------------------
 
 * Flashing Tasmota: https://github.com/tasmota/mgos32-to-tasmota32 (v13.4.1 release from 1.3.3 firmware!)
-* "ADC Range" "2" instead of "ADC Input" on GPIO 36 in "Configuration" -> "Template": https://github.com/arendst/Tasmota/discussions/23721
-* ```AdcGpio36 0,1434,0,12760``` measuring Millivolt (original seeting: ```AdcGpio36 0,4095,5,0```; reading raw value: ```AdcGpio36 0,4095,0,4095```)
-  * use "Tools" -> "GPIO Viewer" to see raw value
+* "ADC Voltage" instead of "ADC Input" on GPIO 36 in "Configuration" -> "Template": https://github.com/arendst/Tasmota/discussions/23721
+* Voltage calibration (go to "Tools" -> "Console")
+  * ```AdcGpio36 0,4095,0,4095```
+  * ```VoltRes 2```
+  * go back to the main menu and note down the value of "ADC1 Voltage" or use "Tools" -> "GPIO Viewer" to see raw value
+  * ```AdcGpio36 0,<value>,0,<real volts>``` with "<value>" the value you noted down in the prior step and "<real volts>" the value of your voltmeter, e.g. "12.76"
 
 Shutter automation with Shelly Plus 2PM Gen3
 --------------------------------------------
