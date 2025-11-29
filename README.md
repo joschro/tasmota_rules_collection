@@ -31,6 +31,11 @@ Default values:
 * https://tasmota.github.io/docs/PowerOnState
 * https://tasmota.github.io/docs/Commands/#setoptions
 
+To keep the last state of power, switch or sensor updates safed on the MQTT broker, set
+```
+StateRetain 1
+```
+
 Timer
 =====
 To toggle a relay or light off after a specific time being switched on, use PulseTime:
