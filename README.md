@@ -62,6 +62,19 @@ PowerOnState 5
 ```
 once in the console.
 
+Garage Door
+===========
+This is an example for a timer as described above.
+
+```
+mem1 <topic>
+mem2 Garagentor wird geöffnet
+rule1 on Power1#state do Publish <prefix>/Garagentor/POWER %value% endon
+rule2 ON Power1#state=1 do WebQuery http://ntfy.sh/%MEM1% POST %MEM2% endon
+
+pulsetime 15
+```
+
 
 Flip-Flop
 =========
