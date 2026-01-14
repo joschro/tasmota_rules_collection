@@ -967,17 +967,17 @@ wbec-control - Add timer functionality to free wbec version
 
 ```MEM3 0```                  # ID of first wallbox
 
-```MEM4 16```                 # max charging from grid for wallbox 1 (->VAR4)
+```MEM4 16```                 # max charging from grid for wallbox 1 (->VAR4, VAR6 as percentage)
 
-```MEM5 16```                 # max charging when PV only for wallbox 1 (->VAR5)
+```MEM5 16```                 # max charging when PV only for wallbox 1 (->VAR5, VAR7 as percentage)
 
 ```MEM6 100```                # charge until <MEM6>% for wallbox 1
 
 ```MEM7 1```                  # ID of second wallbox
 
-```MEM8 16```                 # max charging from grid for wallbox 2 (->VAR8)
+```MEM8 16```                 # max charging from grid for wallbox 2 (->VAR8, VAR10 as percentage)
 
-```MEM9 16```                 # max charging when PV only for wallbox 2 (->VAR9)
+```MEM9 16```                 # max charging when PV only for wallbox 2 (->VAR9, VAR11 as percentage)
 
 ```MEM10 100```               # charge until <MEM10>% for wallbox 2
 
@@ -1022,7 +1022,7 @@ RULE1
   ENDON
 
   ON System#Boot DO
-    BACKLOG VAR1 0; VAR2 0; VAR3=MEM4*10; VAR4=MEM5*10; VAR5=MEM8*10; VAR6=MEM9*10
+    BACKLOG VAR1 0; VAR2 0; VAR4=MEM4*10; VAR5=MEM5*10; VAR8=MEM8*10; VAR9=MEM9*10; VAR6 100; VAR7 100; VAR10 100; VAR11 100
   ENDON
 
   ON Ping#<ip-address-from-MEM1>#Success>0 DO    # we can't use %MEM1% here, use the IP address directly instead
@@ -1082,4 +1082,45 @@ RULE3
           
 ```
 BACKLOG RULE1 1; RULE2 1; RULE3 1
+```
+
+Original:
+```
+RULE1
+ ON Clock#Timer=1 DO     Power1 1   ENDON
+ ON Clock#Timer=2 DO     Power1 0   ENDON
+ ON Clock#Timer=3 DO     Power1 1   ENDON
+ ON Clock#Timer=4 DO     Power1 0   ENDON
+ ON Clock#Timer=5 DO     Power2 1   ENDON
+ ON Clock#Timer=6 DO     Power2 0   ENDON
+ ON Clock#Timer=7 DO     Power2 1   ENDON
+ ON Clock#Timer=8 DO     Power2 0   ENDON
+ ON System#Boot DO     BACKLOG VAR1=MEM4*10; VAR2=MEM5*10; VAR3 0   ENDON
+ ON Ping#192.168.178.102#Success>0 DO     BACKLOG VAR3 1 ; VAR4 1   ENDON
+```
+
+```
+Rule2
+ ON Power1#State=1 DO     BACKLOG VAR3 0; ping4 %MEM1%; RuleTimer2 0; RuleTimer1 10   ENDON
+ ON Rules#Timer=1 DO
+  IF (%VAR3%==1)       WebQuery http://%MEM1%/json?id=%MEM2%&pvMode=1&currLim=%VAR1% ; WebQuery http://ntfy.sh/%MEM6% POST [Title: Wallbox charging state changed] Wallbox %MEM2% now charging from grid with max %MEM4%A ; Publish stat/wbec_ctrl/POWER1 1
+  ELSE        ping4 %MEM1%; RuleTimer1 10
+  ENDIF   ENDON
+ ON Power1#State=0 DO     BACKLOG VAR3 0; ping4 %MEM1%; RuleTimer1 0; RuleTimer2 10   ENDON
+ ON Rules#Timer=2 DO
+  IF (%VAR3%==1)       WebQuery http://%MEM1%/json?id=%MEM2%&pvMode=2&currLim=%VAR2% ; WebQuery http://ntfy.sh/%MEM6% POST [Title: Wallbox charging state changed] Wallbox %MEM2% now charging PV only with max %MEM5%A ; Publish stat/wbec_ctrl/POWER1 0
+  ELSE        ping4 %MEM1%; RuleTimer2 10
+  ENDIF   ENDON
+```
+
+```
+ON Power2#State=1 DO     BACKLOG VAR4 0; ping4 %MEM1%; RuleTimer4 0; RuleTimer3 10
+ ENDON   ON Rules#Timer=3 DO
+  IF (%VAR4%==1)       WebQuery http://%MEM1%/json?id=%MEM3%&pvMode=1&currLim=%VAR1% ; WebQuery http://ntfy.sh/%MEM6% POST [Title: Wallbox charging state changed] Wallbox %MEM3% now charging from grid with max %MEM4%A (%VAR1%) ; Publish stat/wbec_ctrl/POWER2 1
+  ELSE        ping4 %MEM1%; RuleTimer3 10
+  ENDIF   ENDON
+ ON Power2#State=0 DO     BACKLOG VAR4 0; ping4 %MEM1%; RuleTimer3 0; RuleTimer4 10   ENDON
+ ON Rules#Timer=4 DO
+  IF (%VAR4%==1)       WebQuery http://%MEM1%/json?id=%MEM3%&pvMode=2&currLim=%VAR2% ; WebQuery http://ntfy.sh/%MEM6% POST [Title: Wallbox charging state changed] Wallbox %MEM3% now charging PV only with max %MEM5%A (%VAR2%); Publish stat/wbec_ctrl/POWER2 0
+  ELSE        ping4 %MEM1%; RuleTimer4 10     ENDIF   ENDON
 ```
