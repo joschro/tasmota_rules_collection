@@ -987,20 +987,27 @@ wbec-control - Add timer functionality to free wbec version
 ```
 
 ```
-BACKLOG WebButton3 WB1 +10% ; WebButton4 WB1 -10%; WebButton5 WB2 +10% ; WebButton6 WB2 -10%
+BACKLOG
+  WebButton3 WB1 +10%;
+  WebButton4 WB1 -10%;
+  WebButton5 WB2 +10%;
+  WebButton6 WB2 -10%;
+  PulseTime3 1;
+  PulseTime4 1;
+  PulseTime5 1;
+  PulseTime6 1;
 ```
 
 ```
 RULE1
-
-  ON Clock#Timer=1 DO    Power1 1  ENDON
-  ON Clock#Timer=2 DO    Power1 0  ENDON
-  ON Clock#Timer=3 DO    Power1 1  ENDON
-  ON Clock#Timer=4 DO    Power1 0  ENDON
-  ON Clock#Timer=5 DO    Power2 1  ENDON
-  ON Clock#Timer=6 DO    Power2 0  ENDON
-  ON Clock#Timer=7 DO    Power2 1  ENDON
-  ON Clock#Timer=8 DO    Power2 0  ENDON
+  ON Clock#Timer=1 DO Power1 1  ENDON
+  ON Clock#Timer=2 DO Power1 0  ENDON
+  ON Clock#Timer=3 DO Power1 1  ENDON
+  ON Clock#Timer=4 DO Power1 0  ENDON
+  ON Clock#Timer=5 DO Power2 1  ENDON
+  ON Clock#Timer=6 DO Power2 0  ENDON
+  ON Clock#Timer=7 DO Power2 1  ENDON
+  ON Clock#Timer=8 DO Power2 0  ENDON
 
   ON System#Boot DO
     BACKLOG
@@ -1013,12 +1020,6 @@ RULE1
       VAR7=VAR6*7.875*MEM4+100;
       VAR10 %MEM10%;
       VAR11=VAR10*7.875*MEM8+100;
-      PulseTime1 %VAR7%;
-      PulseTime2 %VAR11%;
-      PulseTime3 1;
-      PulseTime4 1;
-      PulseTime5 1;
-      PulseTime6 1;
       Counter1 %MEM6%;
       Counter2 %MEM10%
   ENDON
@@ -1033,6 +1034,8 @@ RULE1
   ON Power5#State=0 DO    Counter2 +10  ENDON
   ON Power6#State=0 DO    Counter2 -10  ENDON
   ON Counter#C2!=%VAR10% DO BACKLOG VAR10 %value%; VAR11=%value%*126+100 ENDON
+  ON VAR7#State DO PulseTime1 %VAR7% ENDON
+  ON VAR11#State DO PulseTime2 %VAR11% ENDON
 ```
 ```
 RULE2
