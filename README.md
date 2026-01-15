@@ -1035,15 +1035,8 @@ RULE1
   ON Counter#C2!=%VAR10% DO BACKLOG VAR10 %value%; VAR11=%value%*126+100 ENDON
 ```
 ```
-backup: VAR7=VAR6*126+100;
- VAR11=VAR10*126+100;
-```
-```
 RULE2
-
-  ON MEM4#State DO BACKLOG VAR4=MEM4*10; VAR7=VAR6*7.875*MEM4+100 ENDON
-  ON MEM8#State DO BACKLOG VAR8=MEM8*10; VAR11=VAR10*7.875*MEM8+100 ENDON
-
+  ON MEM4#State DO BACKLOG VAR4=MEM4*10; VAR7=VAR6*16*126/MEM4+100 ENDON
   ON Power1#State=1 DO
     BACKLOG VAR1 0; ping4 %MEM1%; RuleTimer2 0; RuleTimer1 10
   ENDON
@@ -1068,7 +1061,7 @@ RULE2
 ```
 ```
 RULE3
-
+  ON MEM8#State DO BACKLOG VAR8=MEM8*10; VAR11=VAR10*16*126/MEM8+100 ENDON
   ON Power2#State=1 DO
     BACKLOG VAR2 0; ping4 %MEM1%; RuleTimer4 0; RuleTimer3 10
   ENDON
@@ -1126,8 +1119,9 @@ Rule2
 ```
 
 ```
-ON Power2#State=1 DO     BACKLOG VAR4 0; ping4 %MEM1%; RuleTimer4 0; RuleTimer3 10
- ENDON   ON Rules#Timer=3 DO
+Rule3
+ ON Power2#State=1 DO     BACKLOG VAR4 0; ping4 %MEM1%; RuleTimer4 0; RuleTimer3 10 ENDON
+ ON Rules#Timer=3 DO
   IF (%VAR4%==1)       WebQuery http://%MEM1%/json?id=%MEM3%&pvMode=1&currLim=%VAR1% ; WebQuery http://ntfy.sh/%MEM6% POST [Title: Wallbox charging state changed] Wallbox %MEM3% now charging from grid with max %MEM4%A (%VAR1%) ; Publish stat/wbec_ctrl/POWER2 1
   ELSE        ping4 %MEM1%; RuleTimer3 10
   ENDIF   ENDON
