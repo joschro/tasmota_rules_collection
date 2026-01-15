@@ -993,37 +993,14 @@ wbec-control - Add timer functionality to free wbec version
 ```
 RULE1
 
-  ON Clock#Timer=1 DO
-    Power1 1
-  ENDON
-
-  ON Clock#Timer=2 DO
-    Power1 0
-  ENDON
-
-  ON Clock#Timer=3 DO
-    Power1 1
-  ENDON
-
-  ON Clock#Timer=4 DO
-    Power1 0
-  ENDON
-
-  ON Clock#Timer=5 DO
-    Power2 1
-  ENDON
-
-  ON Clock#Timer=6 DO
-    Power2 0
-  ENDON
-
-  ON Clock#Timer=7 DO
-    Power2 1
-  ENDON
-
-  ON Clock#Timer=8 DO
-    Power2 0
-  ENDON
+  ON Clock#Timer=1 DO    Power1 1  ENDON
+  ON Clock#Timer=2 DO    Power1 0  ENDON
+  ON Clock#Timer=3 DO    Power1 1  ENDON
+  ON Clock#Timer=4 DO    Power1 0  ENDON
+  ON Clock#Timer=5 DO    Power2 1  ENDON
+  ON Clock#Timer=6 DO    Power2 0  ENDON
+  ON Clock#Timer=7 DO    Power2 1  ENDON
+  ON Clock#Timer=8 DO    Power2 0  ENDON
 
   ON System#Boot DO
     BACKLOG VAR1 0; VAR2 0; VAR4=MEM4*10; VAR5=MEM5*10; VAR8=MEM8*10; VAR9=MEM9*10; VAR6=MEM6; VAR7=VAR6*126+100; VAR10=MEM10; VAR11=10*126+100; PulseTime1 %VAR7%; PulseTime2 %VAR11%
