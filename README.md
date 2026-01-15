@@ -984,8 +984,12 @@ wbec-control - Add timer functionality to free wbec version
 ```
 # VAR1 WBEC is online
 # VAR2 WBEC is online (?)
+# VAR4 max grid charge for wb 1 in Amps x 10
+# VAR5 max PV charge for wb 1 in Amps x 10
 # VAR6 wallbox 1 max grid charge in percentage
 # VAR7 wallbox 1 charging time until VAR6% based on 3,5h charging time to 100%
+# VAR8 max grid charge for wb 2 in Amps x 10
+# VAR9 max PV charge for wb 2 in Amps x 10
 # VAR10 wallbox 2 max grid charge in percentage
 # VAR11 wallbox 2 charging time until VAR10% based on 3,5h charging time to 100%
 ```
