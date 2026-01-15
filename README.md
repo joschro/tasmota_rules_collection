@@ -933,18 +933,10 @@ Backlog AdcGpio1 10000,10000,4000; ButtonTopic 0; SetOption1 1; SetOption11 0; S
 * Create rules
 ```
 RULE1
-  ON Button1#State=2 DO
-    dimmer +
-  ENDON
-  ON Button2#State=2 DO
-    dimmer -
-  ENDON
-  ON Button1#State=3 DO
-    power 2
-  ENDON
-  ON Button2#State=3 DO
-    power 2
-  ENDON
+  ON Button1#State=2 DO    dimmer +  ENDON
+  ON Button2#State=2 DO    dimmer -  ENDON
+  ON Button1#State=3 DO    power 2  ENDON
+  ON Button2#State=3 DO    power 2  ENDON
 ```
 ```
 RULE2
@@ -967,31 +959,35 @@ wbec-control - Add timer functionality to free wbec version
 
 ```MEM3 0```                  # ID of first wallbox
 
-```MEM4 16```                 # max charging from grid for wallbox 1 (->VAR4)
+```MEM4 16```                 # max charging in [A] from grid for wallbox 1
 
-```MEM5 16```                 # max charging when PV only for wallbox 1 (->VAR5)
+```MEM5 16```                 # max charging in [A] when PV only for wallbox 1
 
 ```MEM6 100```                # charge until <MEM6>% for wallbox 1
 
 ```MEM7 1```                  # ID of second wallbox
 
-```MEM8 16```                 # max charging from grid for wallbox 2 (->VAR8)
+```MEM8 16```                 # max charging in [A] from grid for wallbox 2
 
-```MEM9 16```                 # max charging when PV only for wallbox 2 (->VAR9)
+```MEM9 16```                 # max charging in [A] when PV only for wallbox 2
 
 ```MEM10 100```               # charge until <MEM10>% for wallbox 2
 
 ```
 # VAR1 WBEC is online
 # VAR2 WBEC is online (?)
-# VAR4 max grid charge for wb 1 in Amps x 10
-# VAR5 max PV charge for wb 1 in Amps x 10
-# VAR6 wallbox 1 max grid charge in percentage
+# VAR4 max grid charge for wb 1 in [A]x10
+# VAR5 max PV charge for wb 1 in [A]x10
+# VAR6 wallbox 1 max grid charge in [%]
 # VAR7 wallbox 1 charging time until VAR6% based on 3,5h charging time to 100%
-# VAR8 max grid charge for wb 2 in Amps x 10
-# VAR9 max PV charge for wb 2 in Amps x 10
-# VAR10 wallbox 2 max grid charge in percentage
+# VAR8 max grid charge for wb 2 in [A]x10
+# VAR9 max PV charge for wb 2 in [A]x10
+# VAR10 wallbox 2 max grid charge in [%]
 # VAR11 wallbox 2 charging time until VAR10% based on 3,5h charging time to 100%
+```
+
+```
+BACKLOG WebButton3 WB1 +10% ; WebButton4 WB1 -10%; WebButton5 WB2 +10% ; WebButton6 WB2 -10%
 ```
 
 ```
@@ -1007,12 +1003,41 @@ RULE1
   ON Clock#Timer=8 DO    Power2 0  ENDON
 
   ON System#Boot DO
-    BACKLOG VAR1 0; VAR2 0; VAR4=MEM4*10; VAR5=MEM5*10; VAR8=MEM8*10; VAR9=MEM9*10; VAR6=MEM6; VAR7=VAR6*126+100; VAR10=MEM10; VAR11=VAR10*126+100; PulseTime1 %VAR7%; PulseTime2 %VAR11%
+    BACKLOG
+      VAR1 0;
+      VAR2 0;
+      VAR4=MEM4*10;
+      VAR5=MEM5*10;
+      VAR8=MEM8*10;
+      VAR9=MEM9*10;
+      VAR6 %MEM6%;
+      VAR7=VAR6*7.875*MEM4+100;
+      VAR10 %MEM10%;
+      VAR11=VAR10*7.875*MEM8+100;
+      PulseTime1 %VAR7%;
+      PulseTime2 %VAR11%;
+      PulseTime3 1;
+      PulseTime4 1;
+      PulseTime5 1;
+      PulseTime6 1;
+      Counter1 %MEM6%;
+      Counter2 %MEM10%
   ENDON
 
   ON Ping#<ip-address-from-MEM1>#Success>0 DO    # we can't use %MEM1% here, use the IP address directly instead
     BACKLOG VAR1 1 ; VAR2 1
   ENDON
+
+  ON Power3#State=0 DO    Counter1 +10  ENDON
+  ON Power4#State=0 DO    Counter1 -10  ENDON
+  ON Counter#C1!=%VAR6% DO BACKLOG VAR6 %value%; VAR7=%value%*126+100 ENDON
+  ON Power5#State=0 DO    Counter2 +10  ENDON
+  ON Power6#State=0 DO    Counter2 -10  ENDON
+  ON Counter#C2!=%VAR10% DO BACKLOG VAR10 %value%; VAR11=%value%*126+100 ENDON
+```
+```
+backup: VAR7=VAR6*126+100;
+ VAR11=VAR10*126+100;
 ```
 ```
 RULE2
