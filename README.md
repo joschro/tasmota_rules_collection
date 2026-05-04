@@ -1091,3 +1091,47 @@ RULE3
 ```
 BACKLOG RULE1 1; RULE2 1; RULE3 1
 ```
+
+-----------------------------------------------------------
+
+Alternative: simple toggle "PV only" / "Force charging" by pressing "Power 1" or "Power 2" without setting PulseTime (this is done by simply setting PulseTime to 0 on each change of VAR7 and VAR11).
+
+```
+RULE1
+  ON Clock#Timer=1 DO Power1 1  ENDON
+  ON Clock#Timer=2 DO Power1 0  ENDON
+  ON Clock#Timer=3 DO Power1 1  ENDON
+  ON Clock#Timer=4 DO Power1 0  ENDON
+  ON Clock#Timer=5 DO Power2 1  ENDON
+  ON Clock#Timer=6 DO Power2 0  ENDON
+  ON Clock#Timer=7 DO Power2 1  ENDON
+  ON Clock#Timer=8 DO Power2 0  ENDON
+
+  ON System#Boot DO
+    BACKLOG
+      VAR1 0; VAR2 0;
+      VAR4=MEM4*10;
+      VAR5=MEM5*10;
+      VAR8=MEM8*10;
+      VAR9=MEM9*10;
+      VAR6 %MEM6%;
+      VAR7=VAR6*7.875*MEM4+100;
+      VAR10 %MEM10%;
+      VAR11=VAR10*7.875*MEM8+100;
+      Counter1 %MEM6%;
+      Counter2 %MEM10%
+  ENDON
+
+  ON Ping#<ip-address-from-MEM1>#Success>0 DO    # we can't use %MEM1% here, use the IP address directly instead
+    BACKLOG VAR1 1 ; VAR2 1
+  ENDON
+
+  ON Power3#State=0 DO    Counter1 +10  ENDON
+  ON Power4#State=0 DO    Counter1 -10  ENDON
+  ON Counter#C1!=%VAR6% DO BACKLOG VAR6 %value%; VAR7=%value%*126+100 ENDON
+  ON Power5#State=0 DO    Counter2 +10  ENDON
+  ON Power6#State=0 DO    Counter2 -10  ENDON
+  ON Counter#C2!=%VAR10% DO BACKLOG VAR10 %value%; VAR11=%value%*126+100 ENDON
+  ON VAR7#State DO PulseTime1 0 ENDON
+  ON VAR11#State DO PulseTime2 0 ENDON
+```
