@@ -521,12 +521,40 @@ Pulse counter
 Example use case is an analog water counter that short cuts two wires at every 1/1000 m³ (1l).
 Counter2 is the counted amout in m³.
 ```
+Var1 # last value of Counter1 [l]
+Var2 # last value of Counter2 [m³]
+Var3 # Counter2+Counter1/1000 [m³]
+Var4 # flow rate [l/h]
+Var5 # value of Counter1 at RuleTimer1 start
+Mem1 # last value of Counter2 [m³]
+Mem2 # seconds between two measurements of Counter2 for flow rate calculation
+```
+```
+BACKLOG MEM1 <current state of Counter2>; MEM2 360; Var1 <current state of Counter1>
+Var3=Var1/1000+%Mem1%
+```
+```
 RULE1
-  ON Counter#C1=1000 DO
-    Counter2 +1
-  ENDON
   ON Counter#C1>=1000 DO
-    BACKLOG Var1 0; Counter1 0
+    BACKLOG Counter2 +1; Counter1 0
+  ENDON
+  ON Counter#C1 DO
+    BACKLOG Var1 %value%; Var3=%value%/1000+%Mem1%
+  ENDON
+  ON Counter#C2 DO
+    BACKLOG Var2 %value%; Mem1 %value%
+  ENDON
+  ON Counter#C1 DO
+    BACKLOG Publish tele/<topic>/Counter %Var3%
+  ENDON
+  ON Rules#Timer=1 DO
+    BACKLOG Var4=1000*(%Var1%-%Var5%)/(%MEM2%/3600); RuleTimer1 %MEM2%
+  ENDON
+  ON Rules#Timer=1 DO
+    BACKLOG Var5=%Var1%; Publish tele/<topic>/FlowRate %Var4%
+  ENDON
+  ON System#Boot do
+    BACKLOG RuleTimer1 %MEM2%; Var1 0; Var2 %Mem1%; Var 3 0; Var5 0
   ENDON
 ```
 ```
@@ -536,35 +564,6 @@ RULE1 1
 To make sure one short cut is ony counted once, you need to set the ```CounterDebounce``` variable to a reasonable value (in milliseconds):
 ```
 CounterDebounce 500
-```
-
-To publish the full count in l (Counter1 + Counter2), you can add the following rules:
-```
-BACKLOG MEM1 0; MEM2 360; Var1 0; Var3 0
-```
-```
-RULE2
-  ON Counter#C1>%Var1% DO
-    IF (%value%<1000) Var1 %value% ; Var2=%value%/1000+%Mem1% ENDIF
-  ENDON
-  ON Counter#C2>%Mem1% DO
-    Mem1 %value%
-  ENDON
-  ON Rules#Timer=1 DO
-    BACKLOG Var4=1000*(%Var2%-%Var3%)/(%MEM2%/3600); RuleTimer1 %MEM2%
-  ENDON
-  ON Rules#Timer=1 DO
-    BACKLOG Var3=%Var2%; Publish tele/<topic>/FlowRate %Var4%
-  ENDON
-```
-```
-RULE3
-  ON Counter#C1>%Var1% DO
-    Publish tele/<topic>/Counter %Var2%
-  ENDON
-  ON System#Boot do
-    BACKLOG RuleTimer1 %MEM2%; Var1 0; Var3 0
-  ENDON
 ```
 ```
 BACKLOG RULE2 1; RULE3 1
