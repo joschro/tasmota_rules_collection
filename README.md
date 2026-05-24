@@ -538,20 +538,17 @@ RULE1
   ON Counter#C1>=1000 DO
     BACKLOG Counter2 +1; Counter1 0
   ENDON
-  ON Counter#C1 DO
+  ON Counter#C1>%Var1% DO
     BACKLOG Var1 %value%; Var3=%value%/1000+%Mem1%
   ENDON
-  ON Counter#C2 DO
+  ON Counter#C2>%Var2% DO
     BACKLOG Var2 %value%; Mem1 %value%
-  ENDON
-  ON Counter#C1 DO
-    BACKLOG Publish tele/<topic>/Counter %Var3%
   ENDON
   ON Rules#Timer=1 DO
     BACKLOG Var4=1000*(%Var1%-%Var5%)/(%MEM2%/3600); RuleTimer1 %MEM2%
   ENDON
   ON Rules#Timer=1 DO
-    BACKLOG Var5=%Var1%; Publish tele/<topic>/FlowRate %Var4%
+    BACKLOG Var5=%Var1%; Publish tele/<topic>/FlowRate %Var4%; Publish tele/<topic>/Counter %Var3%
   ENDON
   ON System#Boot do
     BACKLOG RuleTimer1 %MEM2%; Var1 0; Var2 %Mem1%; Var 3 0; Var5 0
