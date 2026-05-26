@@ -522,36 +522,34 @@ Example use case is an analog water counter that short cuts two wires at every 1
 Counter2 is the counted amout in m³.
 ```
 Var1 # last value of Counter1 [l]
-Var2 # last value of Counter2 [m³]
-Var3 # Counter2+Counter1/1000 [m³]
-Var4 # flow rate [l/h]
-Var5 # value of Counter1 at RuleTimer1 start
-Mem1 # last value of Counter2 [m³]
-Mem2 # seconds between two measurements of Counter2 for flow rate calculation
+Var2 # value of Counter1 at RuleTimer1 start
+Var3 # flow rate [l/h]
+Var4 # last value of Counter1 [m3]
+Var5 # value of Counter1 
+Mem1 # seconds between two measurements of Counter2 for flow rate calculation
+Mem2 # MQTT topic
 ```
 ```
-BACKLOG MEM1 <current state of Counter2>; MEM2 360; Var1 <current state of Counter1>
-Var3=Var1/1000+%Mem1%
+BACKLOG Mem1 360; Var1 0; Mem2 <MQTT-topic>
 ```
 ```
 RULE1
-  ON Counter#C1>=1000 DO
-    BACKLOG Counter2 +1; Counter1 0
-  ENDON
   ON Counter#C1>%Var1% DO
-    BACKLOG Var1 %value%; Var3=%value%/1000+%Mem1%
+    BACKLOG Var1 %value%; Var4=%Var1%/1000
   ENDON
-  ON Counter#C2>%Var2% DO
-    BACKLOG Var2 %value%; Mem1 %value%
+  ON Counter#C1 DO
+    IF (%VAR4%>%Var5%)
+      Publish tele/%Mem2%/Counter %Var4%; Var5=%Var4%
+    ENDIF
   ENDON
   ON Rules#Timer=1 DO
-    BACKLOG Var4=1000*(%Var1%-%Var5%)/(%MEM2%/3600); RuleTimer1 %MEM2%
+    BACKLOG Var3=1000*(%Var1%-%Var2%)/(%MEM1%/3600); RuleTimer1 %MEM1%
   ENDON
   ON Rules#Timer=1 DO
-    BACKLOG Var5=%Var1%; Publish tele/<topic>/FlowRate %Var4%; Publish tele/<topic>/Counter %Var3%
+    BACKLOG Var2=%Var1%; Publish tele/%Mem2%/FlowRate %Var3%; Publish tele/%Mem2%/Counter %Var4%
   ENDON
   ON System#Boot do
-    BACKLOG RuleTimer1 %MEM2%; Var1 0; Var2 %Mem1%; Var 3 0; Var5 0
+    BACKLOG RuleTimer1 %Mem1%; Var1 0; Var2 0; Var 3 0
   ENDON
 ```
 ```
@@ -561,9 +559,6 @@ RULE1 1
 To make sure one short cut is ony counted once, you need to set the ```CounterDebounce``` variable to a reasonable value (in milliseconds):
 ```
 CounterDebounce 500
-```
-```
-BACKLOG RULE2 1; RULE3 1
 ```
 
 Distance / water level measurement
