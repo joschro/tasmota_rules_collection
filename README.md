@@ -523,33 +523,39 @@ Counter2 is the counted amout in m³.
 ```
 Var1 # last value of Counter1 [l]
 Var2 # value of Counter1 at RuleTimer1 start
-Var3 # flow rate [l/h]
-Var4 # last value of Counter1 [m3]
-Var5 # value of Counter1 
-Mem1 # seconds between two measurements of Counter2 for flow rate calculation
-Mem2 # MQTT topic
+Var3 # last value of Counter2 [m3]
+Var5 # flow rate [l/h]
+Var6 # last value of flow rate
+Mem1 # MQTT topic
+Mem2 # seconds between two measurements of Counter2 for flow rate calculation
 ```
 ```
-BACKLOG Mem1 360; Var1 0; Mem2 <MQTT-topic>
+BACKLOG Mem1 <MQTT-topic>; Mem2 60; Var1 0; Var2 0; Var 3 0; Var5 0; Var6 0
 ```
 ```
 RULE1
   ON Counter#C1>%Var1% DO
-    BACKLOG Var1 %value%; Var4=%Var1%/1000
+    BACKLOG Var1 %value%; Var3=%value%/1000; EVENT Counter1Update
   ENDON
-  ON Counter#C1 DO
-    IF (%VAR4%>%Var5%)
-      Publish tele/%Mem2%/Counter %Var4%; Var5=%Var4%
-    ENDIF
-  ENDON
-  ON Rules#Timer=1 DO
-    BACKLOG Var3=1000*(%Var1%-%Var2%)/(%MEM1%/3600); RuleTimer1 %MEM1%
-  ENDON
-  ON Rules#Timer=1 DO
-    BACKLOG Var2=%Var1%; Publish tele/%Mem2%/FlowRate %Var3%; Publish tele/%Mem2%/Counter %Var4%
+  ON Event#Counter1Update DO
+    BACKLOG Counter2 %Var3%; Publish tele/%Mem1%/Counter %Var3%
   ENDON
   ON System#Boot do
-    BACKLOG RuleTimer1 %Mem1%; Var1 0; Var2 0; Var 3 0
+    BACKLOG RuleTimer1 %Mem2%; RuleTimer2 5; Var1 0; Var2 0; Var 3 0; Var5 0; Var6 0
+  ENDON
+```
+```
+RULE2
+  ON Rules#Timer=1 DO
+    BACKLOG Var5=(%Var1%-%Var2%)/(%MEM2%/3600); EVENT FlowRateUpdate
+  ENDON
+  ON Event#FlowRateUpdate DO
+    IF (%Var5%!=%Var6%)
+      Publish tele/%Mem1%/FlowRate %Var5%; Var2=%Var1%; Var6=%Var5%
+    ENDIF
+  ENDON
+  ON Event#FlowRateUpdate DO
+    RuleTimer1 %MEM2%
   ENDON
 ```
 ```
