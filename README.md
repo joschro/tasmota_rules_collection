@@ -528,6 +528,7 @@ Var5 # flow rate [l/h]
 Var6 # last value of flow rate
 Mem1 # MQTT topic
 Mem2 # seconds between two measurements of Counter2 for flow rate calculation
+Mem3 # last 
 ```
 ```
 BACKLOG Mem1 <MQTT-topic>; Mem2 60; Var1 0; Var2 0; Var 3 0; Var5 0; Var6 0
@@ -541,7 +542,7 @@ RULE1
     BACKLOG Counter2 %Var3%; Publish tele/%Mem1%/Counter %Var3%
   ENDON
   ON System#Boot do
-    BACKLOG RuleTimer1 %Mem2%; RuleTimer2 5; Var1 0; Var2 0; Var 3 0; Var5 0; Var6 0
+    BACKLOG RuleTimer1 %Mem2%; Var1 0; Var2 0; Var 3 0; Var5 0; Var6 0
   ENDON
 ```
 ```
