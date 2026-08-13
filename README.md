@@ -494,10 +494,10 @@ RULE2
    BACKLOG VAR1 ALARM_OFF ; VAR2 0
   ENDON
   ON System#Boot DO
-   BACKLOG IpAddress
+   IpAddress
   ENDON
   ON IpAddress1 DO
-    BACKLOG VAR2 1 ; VAR3 %value% ENDON
+    BACKLOG VAR2 1 ; VAR3 %value%
   ENDON
   ON StatusNET#IPAddress DO
    VAR3 %value%
