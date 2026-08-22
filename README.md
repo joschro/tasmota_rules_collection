@@ -394,14 +394,16 @@ RULE2
   ON Power1#State=1 DO
    BACKLOG VAR1 ALARM_ON; WebQuery http://ntfy.sh/%MEM2% POST [Title: %MEM3%|Priority:max|Tags:rotating_light] %MEM5% http://%VAR2%
   ENDON
+  ON StatusNET#IPAddress DO
+   VAR2 %value%
+  ENDON
+```
+```
   ON System#Boot DO
    IpAddress
   ENDON
   ON IpAddress1 DO
     VAR2 %value%
-  ENDON
-  ON StatusNET#IPAddress DO
-   VAR2 %value%
   ENDON
 ```
 This example includes a notification via the free notification service ntfy.sh.
