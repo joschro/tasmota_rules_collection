@@ -910,6 +910,11 @@ It can be controlled with e.g.
 ShutterPosition 50
 ```
 
+For MQTT control:
+```
+BACKLOG ON Shutter1#Position DO Publish2 status/%topic%/level {\"%value%\"} ENDON; RULE1 1
+```
+
 Light controlled via DALI protocol
 ----------------------------------
 See https://tasmota.github.io/docs/DALI/#shelly-dali-dimmer-gen3 and https://us.shelly.com/blogs/documentation/shelly-dali-dimmer-gen3 .
